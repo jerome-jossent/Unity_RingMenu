@@ -64,8 +64,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ClickOnCollider.cs" />
+    <Compile Include="Assets\GameObjectSelectionManager.cs" />
+    <Compile Include="Assets\MaterialSetColor.cs" />
+    <Compile Include="Assets\ObjExporter.cs" />
+    <Compile Include="Assets\PrintMesh.cs" />
     <Compile Include="Assets\QuadCreator.cs" />
+    <Compile Include="Assets\ScriptsManager.cs" />
+    <Compile Include="Assets\Sector3D.cs" />
+    <Compile Include="Assets\Sector3D_demo.cs" />
     <Compile Include="Assets\Triangle3D.cs" />
+    <Compile Include="Assets\Triangle3DPrimitive.cs" />
+    <Compile Include="Assets\TrianglePrimitive.cs" />
     <Compile Include="Assets\shaders\MousePos2Shader.cs" />
     <None Include="Assets\shaders\Diffuse ZWrite.shader" />
     <None Include="Assets\shaders\XRay.shader" />
@@ -77,6 +87,7 @@
     <None Include="Assets\shaders\Reveal Backfaces.shader" />
     <None Include="Assets\shaders\Diffuse.shader" />
     <None Include="Assets\shaders\jj.shader" />
+    <None Include="Assets\TransparentColored.shader" />
     <None Include="Assets\shaders\AlphaSelfIllum.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
