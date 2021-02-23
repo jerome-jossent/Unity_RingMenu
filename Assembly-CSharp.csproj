@@ -64,33 +64,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ClickOnCollider.cs" />
-    <Compile Include="Assets\GameObjectSelectionManager.cs" />
-    <Compile Include="Assets\MaterialSetColor.cs" />
-    <Compile Include="Assets\ObjExporter.cs" />
-    <Compile Include="Assets\PrintMesh.cs" />
-    <Compile Include="Assets\QuadCreator.cs" />
-    <Compile Include="Assets\RingBouton.cs" />
-    <Compile Include="Assets\ScriptsManager.cs" />
-    <Compile Include="Assets\Sector3D.cs" />
-    <Compile Include="Assets\Sector3D_demo.cs" />
-    <Compile Include="Assets\TransformAGOFromInputs.cs" />
-    <Compile Include="Assets\Triangle3D.cs" />
-    <Compile Include="Assets\Triangle3DPrimitive.cs" />
-    <Compile Include="Assets\TrianglePrimitive.cs" />
-    <Compile Include="Assets\shaders\MousePos2Shader.cs" />
-    <None Include="Assets\shaders\Diffuse ZWrite.shader" />
-    <None Include="Assets\shaders\XRay.shader" />
-    <None Include="Assets\shaders\GLSL shader using discard.shader" />
-    <None Include="Assets\shaders\Shader Simple Glass.shader" />
-    <None Include="Assets\pb_CSG-master\Samples\Demo Assets\Shader\Wireframe.shader" />
-    <None Include="Assets\shaders\PassesWithStencil.shader" />
-    <None Include="Assets\shaders\TestShaderTwoPass.shader" />
-    <None Include="Assets\shaders\Reveal Backfaces.shader" />
-    <None Include="Assets\shaders\Diffuse.shader" />
-    <None Include="Assets\shaders\jj.shader" />
-    <None Include="Assets\Resources\TransparentColored.shader" />
-    <None Include="Assets\shaders\AlphaSelfIllum.shader" />
+    <Compile Include="Assets\Resources\scripts\ClickOnCollider.cs" />
+    <Compile Include="Assets\Resources\scripts\GameObjectSelectionManager.cs" />
+    <Compile Include="Assets\Resources\scripts\MaterialSetColor.cs" />
+    <Compile Include="Assets\Resources\scripts\ObjExporter.cs" />
+    <Compile Include="Assets\Resources\scripts\PrintMesh.cs" />
+    <Compile Include="Assets\Resources\scripts\QuadCreator.cs" />
+    <Compile Include="Assets\Resources\scripts\RingBouton.cs" />
+    <Compile Include="Assets\Resources\scripts\ScriptsManager.cs" />
+    <Compile Include="Assets\Resources\scripts\Sector3D.cs" />
+    <Compile Include="Assets\Resources\scripts\Sector3D_demo.cs" />
+    <Compile Include="Assets\Resources\scripts\TransformAGOFromInputs.cs" />
+    <Compile Include="Assets\Resources\scripts\Triangle3D.cs" />
+    <Compile Include="Assets\Resources\scripts\Triangle3DPrimitive.cs" />
+    <Compile Include="Assets\Resources\scripts\TrianglePrimitive.cs" />
+    <None Include="Assets\Resources\shaders\TransparentColored.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -647,16 +635,7 @@
       <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Parabox.CSG.csproj">
-      <Project>{75036C82-0AA1-5E91-46CE-4F9A531E2EC5}</Project>
-      <Name>Parabox.CSG</Name>
-    </ProjectReference>
-    <ProjectReference Include="Parabox.CSG.Demo.csproj">
-      <Project>{43515FC4-2DE4-0156-0D85-46D9BBA9F7D8}</Project>
-      <Name>Parabox.CSG.Demo</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
