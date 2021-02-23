@@ -6,12 +6,9 @@ public class MaterialSetColor
 {
 	public static void Colorier(GameObject go, Color color)
 	{
-		//Material mat = go.GetComponent<Renderer>().material;
-		//mat = new Material(Shader.Find("Specular"));
 		Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
 		ChangeRenderMode(mat, BlendMode.Transparent);
 		mat.color = color;
-
 		go.GetComponent<Renderer>().material = mat;
 	}
 

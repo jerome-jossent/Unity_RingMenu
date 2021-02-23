@@ -53,7 +53,7 @@ namespace Parabox.CSG.Demo
 
 			
 
-			left = Triangle3DPrimitive.CreateTriangle();
+			//left = Triangle3DPrimitive.CreateTriangle();
 			//MeshExporter.ObjExporter.MeshToFile(left, $"Triangle3DPrimitiveJJ.obj");
 			//left = MakeCylinder(1, 1);
 		}
@@ -104,148 +104,62 @@ namespace Parabox.CSG.Demo
 			DoBooleanOperation(BoolOp.Intersect);
 		}
 
-		GameObject CreateRing()
-		{
-			//GameObject secteur1 = Sector3D.CreateObject(1, 2, 0, 90, 18, "S1");
-			//GameObject secteur2 = Sector3D.CreateObject(1, 2, 90, 180, 18, "S2");
-			//GameObject secteur3 = Sector3D.CreateObject(1, 2, 180, 270, 18, "S3");
-			//GameObject secteur4 = Sector3D.CreateObject(1, 2, 270, 360, 18, "S4");
-			GameObject secteur1 = Sector3D.CreateObject(1, 2, 0, 90, name: "S1");
-			GameObject secteur2 = Sector3D.CreateObject(1, 2, 90, 180, name: "S2");
-			GameObject secteur3 = Sector3D.CreateObject(1, 2, 180, 270, name: "S3");
-			GameObject secteur4 = Sector3D.CreateObject(1, 2, 270, 360, name: "S4");
+		//#region CYLINDRE JJ =============================
+		//GameObject MakeCylinder(float diameter, float height, int numOfPointsOnDisks = 36)
+		//{
+		//	var obj = new GameObject("Cylindre");
+		//	var mesh = MakeCylinderMesh(diameter, height, numOfPointsOnDisks);
+		//	var filter = obj.AddComponent<MeshFilter>();
+		//	var renderer = obj.AddComponent<MeshRenderer>();
+		//	var collider = obj.AddComponent<MeshCollider>();
 
-			MaterialSetColor.Colorier(secteur1, new Color(1f, 0f, 0f, 0.5f));
-			MaterialSetColor.Colorier(secteur2, new Color(1f, 1f, 0f, 0.5f));
-			MaterialSetColor.Colorier(secteur3, new Color(0f, 0f, 1f, 0.5f));
-			MaterialSetColor.Colorier(secteur4, new Color(0f, 1f, 1f, 0.5f));
+		//	filter.sharedMesh = mesh;
+		//	collider.sharedMesh = mesh;
+		//	renderer.sharedMaterial = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Material.mat");
 
-			secteur1.AddComponent<ClickOnCollider>();
-			secteur2.AddComponent<ClickOnCollider>();
-			secteur3.AddComponent<ClickOnCollider>();
-			secteur4.AddComponent<ClickOnCollider>();
+		//	return obj;
+		//}
 
-			//CSG_Model csg_model_1 = new CSG_Model(secteur1);
-			//CSG_Model csg_model_2 = new CSG_Model(secteur2);
-			//CSG_Model csg_model_3 = new CSG_Model(secteur3);
-			//CSG_Model csg_model_4 = new CSG_Model(secteur4);
+		//public Mesh MakeCylinderMesh(float diameter, float height, int numOfPointsOnDisks)
+		//{
+		//	float radius = diameter / 2;
+		//	#region Make Disk 1
+		//	//https://answers.unity.com/questions/944228/creating-a-smooth-round-flat-circle.html
+		//	float angleStep = 360.0f / (float)numOfPointsOnDisks;
+		//	List<Vector3> vertexList = new List<Vector3>();
+		//	List<int> triangleList = new List<int>();
+		//	Quaternion quaternion = Quaternion.Euler(0.0f, 0.0f, angleStep);
+		//	// Make first triangle.
+		//	vertexList.Add(new Vector3(0.0f, 0.0f, 0.0f));  // 1. Circle center.
+		//	vertexList.Add(new Vector3(0.0f, radius, 0.0f));  // 2. First vertex on circle outline (radius = 0.5f)
+		//	vertexList.Add(quaternion * vertexList[1]);     // 3. First vertex on circle outline rotated by angle)
+		//													// Add triangle indices.
+		//	triangleList.Add(0);
+		//	triangleList.Add(1);
+		//	triangleList.Add(2);
+		//	for (int i = 0; i < numOfPointsOnDisks - 1; i++)
+		//	{
+		//		triangleList.Add(0);                      // Index of circle center.
+		//		triangleList.Add(vertexList.Count - 1);
+		//		triangleList.Add(vertexList.Count);
+		//		vertexList.Add(quaternion * vertexList[vertexList.Count - 1]);
+		//	}
+		//	Mesh mesh = new Mesh();
+		//	mesh.vertices = vertexList.ToArray();
+		//	mesh.triangles = triangleList.ToArray();
+		//	#endregion
 
-			//CSG_Node a1 = new CSG_Node(csg_model_1.ToPolygons());
-			//CSG_Node a2 = new CSG_Node(csg_model_2.ToPolygons());
-			//CSG_Node a3 = new CSG_Node(csg_model_3.ToPolygons());
-			//CSG_Node a4 = new CSG_Node(csg_model_4.ToPolygons());
+		//	#region Make Disk 2
 
-			//List<CSG_Polygon> polygons12 = CSG_Node.Union(a1, a2).AllPolygons();
-			//CSG_Model result12 = new CSG_Model(polygons12);
-			//CSG_Node a12 = new CSG_Node(result12.ToPolygons());
+		//	#endregion
 
-			//List<CSG_Polygon> polygons123 = CSG_Node.Union(a12, a3).AllPolygons();
-			//CSG_Model result123 = new CSG_Model(polygons123);
-			//CSG_Node a123 = new CSG_Node(result123.ToPolygons());
+		//	#region Make Enveloppe
 
-			//List<CSG_Polygon> polygons1234 = CSG_Node.Union(a123, a4).AllPolygons();
-			//CSG_Model result1234 = new CSG_Model(polygons1234);
-			////CSG_Node a1234 = new CSG_Node(result1234.ToPolygons());
+		//	#endregion
 
-
-
-			GameObject secteurs = new GameObject();
-
-			secteur1.transform.parent = secteurs.transform;
-			secteur2.transform.parent = secteurs.transform;
-			secteur3.transform.parent = secteurs.transform;
-			secteur4.transform.parent = secteurs.transform;
-
-			//secteurs.AddComponent<MeshFilter>().sharedMesh = result12.mesh;
-			//secteurs.AddComponent<MeshRenderer>().sharedMaterials = result12.materials.ToArray();
-
-			return secteurs;
-
-			//float r_ext = 1;
-			//float r_int = 0.8f;
-			//float epaisseur = 0.02f;
-
-			//GameObject Anneau_Exterieur = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-			//GameObject Anneau_Interieur = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-			//Anneau_Exterieur.transform.localScale = new Vector3(r_ext, epaisseur, r_ext);
-			//Anneau_Interieur.transform.localScale = new Vector3(r_int, epaisseur + 1, r_int);
-
-			//wireframeMaterial = Anneau_Exterieur.GetComponent<MeshRenderer>().sharedMaterial;
-
-			//GenerateBarycentric(Anneau_Exterieur);
-			//GenerateBarycentric(Anneau_Interieur);
-
-			//CSG_Model anneau = Boolean.Subtract(Anneau_Exterieur, Anneau_Interieur);
-
-			//Destroy(Anneau_Exterieur);
-			//Destroy(Anneau_Interieur);
-
-			//GameObject Anneau = new GameObject();
-			//Anneau.AddComponent<MeshFilter>().sharedMesh = anneau.mesh;
-			//Anneau.AddComponent<MeshRenderer>().sharedMaterials = anneau.materials.ToArray();
-
-			//GenerateBarycentric(Anneau);
-
-			//return Anneau;
-		}
-
-
-		#region CYLINDRE JJ =============================
-		GameObject MakeCylinder(float diameter, float height, int numOfPointsOnDisks = 36)
-		{
-			var obj = new GameObject("Cylindre");
-			var mesh = MakeCylinderMesh(diameter, height, numOfPointsOnDisks);
-			var filter = obj.AddComponent<MeshFilter>();
-			var renderer = obj.AddComponent<MeshRenderer>();
-			var collider = obj.AddComponent<MeshCollider>();
-
-			filter.sharedMesh = mesh;
-			collider.sharedMesh = mesh;
-			renderer.sharedMaterial = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Material.mat");
-
-			return obj;
-		}
-
-		public Mesh MakeCylinderMesh(float diameter, float height, int numOfPointsOnDisks)
-		{
-			float radius = diameter / 2;
-			#region Make Disk 1
-			//https://answers.unity.com/questions/944228/creating-a-smooth-round-flat-circle.html
-			float angleStep = 360.0f / (float)numOfPointsOnDisks;
-			List<Vector3> vertexList = new List<Vector3>();
-			List<int> triangleList = new List<int>();
-			Quaternion quaternion = Quaternion.Euler(0.0f, 0.0f, angleStep);
-			// Make first triangle.
-			vertexList.Add(new Vector3(0.0f, 0.0f, 0.0f));  // 1. Circle center.
-			vertexList.Add(new Vector3(0.0f, radius, 0.0f));  // 2. First vertex on circle outline (radius = 0.5f)
-			vertexList.Add(quaternion * vertexList[1]);     // 3. First vertex on circle outline rotated by angle)
-															// Add triangle indices.
-			triangleList.Add(0);
-			triangleList.Add(1);
-			triangleList.Add(2);
-			for (int i = 0; i < numOfPointsOnDisks - 1; i++)
-			{
-				triangleList.Add(0);                      // Index of circle center.
-				triangleList.Add(vertexList.Count - 1);
-				triangleList.Add(vertexList.Count);
-				vertexList.Add(quaternion * vertexList[vertexList.Count - 1]);
-			}
-			Mesh mesh = new Mesh();
-			mesh.vertices = vertexList.ToArray();
-			mesh.triangles = triangleList.ToArray();
-			#endregion
-
-			#region Make Disk 2
-
-			#endregion
-
-			#region Make Enveloppe
-
-			#endregion
-
-			return mesh;
-		}
-		#endregion
+		//	return mesh;
+		//}
+		//#endregion
 
 		public void JJ_toOBJFile()
 		{
@@ -261,9 +175,7 @@ namespace Parabox.CSG.Demo
 			if (left) Destroy(left);
 			if (right) Destroy(right);
 
-			composite = CreateRing();
-			return;
-
+#if UNITY_EDITOR
 
 			//composite.AddComponent<MeshCollider>();
 			//composite.AddComponent<ClickOnCollider>();
@@ -294,6 +206,7 @@ namespace Parabox.CSG.Demo
 
 			composite2.AddComponent<MeshCollider>();
 			composite2.AddComponent<ClickOnCollider>();
+#endif
 		}
 
 		void DoBooleanOperation(BoolOp operation)

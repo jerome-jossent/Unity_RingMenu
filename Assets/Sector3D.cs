@@ -18,7 +18,10 @@ public class Sector3D : MonoBehaviour
 
         filter.sharedMesh = mesh;
         collider.sharedMesh = mesh;
-        renderer.sharedMaterial = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Material>("Default-Material.mat");
+
+        Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+        renderer.sharedMaterial = mat;
+
         obj.name = name;
         return obj;
     }

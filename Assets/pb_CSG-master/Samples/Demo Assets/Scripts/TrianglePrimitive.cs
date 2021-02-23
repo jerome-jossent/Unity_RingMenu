@@ -1,11 +1,11 @@
-﻿//#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
-//#endif
+#endif
 
 public class TrianglePrimitive
 {
-//#if UNITY_EDITOR
+#if UNITY_EDITOR
     private static Mesh CreateMesh()
     {
         Vector3[] vertices = {
@@ -57,5 +57,5 @@ public class TrianglePrimitive
     {
         CreateObject();
     }
-//#endif
+#endif
 }
