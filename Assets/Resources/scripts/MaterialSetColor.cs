@@ -9,8 +9,8 @@ public class MaterialSetColor
         if (go == null)
             return;
 
-        Material mat = new Material(Shader.Find("Specular"));
-        //Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+        //Material mat = new Material(Shader.Find("Specular"));
+        Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
         //ChangeRenderMode(mat, BlendMode.Transparent);
         mat.color = color;
         Renderer rnd = go.GetComponent<Renderer>();

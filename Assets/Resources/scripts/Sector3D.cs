@@ -20,8 +20,7 @@ public class Sector3D : MonoBehaviour
 
             filter.sharedMesh = mesh;
             collider.sharedMesh = mesh;
-            Material mat = new Material(Shader.Find("Specular"));
-            //Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+            Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
             renderer.sharedMaterial = mat;
         }
         obj.name = name;
