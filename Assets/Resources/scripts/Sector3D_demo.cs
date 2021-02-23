@@ -10,11 +10,14 @@ public class Sector3D_demo : MonoBehaviour
     [SerializeField] UnityEngine.UI.Slider _sld_anneau2_btn;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau3_btn;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau4_btn;
+
     [SerializeField] UnityEngine.UI.Slider _sld_anneau0_taille;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau1_taille;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau2_taille;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau3_taille;
     [SerializeField] UnityEngine.UI.Slider _sld_anneau4_taille;
+
+    [SerializeField] UnityEngine.UI.Slider _sld_marge;
 
     [SerializeField] UnityEngine.UI.Text _txt_btns;
     [SerializeField] UnityEngine.UI.Text _txt_btn;
@@ -27,16 +30,23 @@ public class Sector3D_demo : MonoBehaviour
     Color[] colors;
     int btn_index_onthisRing;
     Dictionary<string, RingBouton> dico;
+    UnityEngine.Object[] textures;
 
     void Start()
     {
         colors = DistributeColors(20, 0.8f);
+        //for (int i = 0; i < 20; i++)
+        //    colors[i] = new Color(0.9f, 0.9f, 0.9f, 0.8f);
+
+        textures = Resources.LoadAll("Emoticons", typeof(Texture2D));
+
         _SliderValueChange();
     }
 
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             //Debug.Log(hit.transform.name);
@@ -44,23 +54,27 @@ public class Sector3D_demo : MonoBehaviour
             RingBouton rb = dico[hit.transform.name];
             if (rb != rb_previsous)
             {
-                rb_previsous?._SetNormalColor();
-                rb._SetHighlightColor();
+                if (rb_previsous != null)
+                    rb_previsous._SetNormalColor();
+
+                if (rb != null)
+                    rb._SetHighlightColor();
                 rb_previsous = rb;
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                rb._SetSelectedColor();
+                if (rb != null)
+                    rb._SetSelectedColor();
             }
-            //            Debug.Log(hit.transform.name);
         }
         else
         {
-            rb_previsous?._SetNormalColor();
+            _txt_btn.text = "";
+            if (rb_previsous != null)
+                rb_previsous._SetNormalColor();
             rb_previsous = null;
         }
-        //        Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
     }
 
     Color[] DistributeColors(int nbrcolor, float alpha = 1f)
@@ -108,7 +122,7 @@ public class Sector3D_demo : MonoBehaviour
         float R3_R = _sld_anneau3_taille.value;
         float R4_R = _sld_anneau4_taille.value;
 
-        int marge = 0;
+        float marge = _sld_marge.value; ;
         dico = new Dictionary<string, RingBouton>();
 
         try
@@ -151,21 +165,27 @@ public class Sector3D_demo : MonoBehaviour
 
             GameObject btn = DrawButton(r_ext,
                                 r_int,
-                                marge,
                                 angle_ouverture_deg,
-                                angle_position_deg);
+                                angle_position_deg,
+                                marge);
+            btn.name = "ring_" + ring_index + "_btn_" + i;
+            btn.transform.parent = go.transform;
+
+
+            Texture texture = (Texture)textures[btn_index_onthisRing];
+            //Resources.Load<Texture>("Emoticons/anger") as Texture;
+
+            GameObject icn = DrawIcon(btn, texture);
+            icn.transform.parent = go.transform;
 
             RingBouton rb = btn.AddComponent<RingBouton>();
-
-            btn.name = "ring_" + ring_index + "_btn_" + i;
             rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
-            btn.transform.parent = go.transform;
+            rb._SetColors(colors[btn_index_onthisRing]);
+            rb._icone = icn;
 
             dico.Add(btn.name, rb);
-
-            rb._SetColors(colors[btn_index_onthisRing]);
 
             btn_index_onthisRing++;
         }
@@ -174,9 +194,30 @@ public class Sector3D_demo : MonoBehaviour
         return go;
     }
 
-    GameObject DrawButton(float r_ext, float r_int, float marge, float angle_ouverture_deg, float angle_position_deg)
+    GameObject DrawButton(float r_ext, float r_int, float angle_ouverture_deg, float angle_position_deg, float marge)
     {
-        GameObject secteur = Sector3D.CreateObject(r_int, r_ext, angle_position_deg, angle_position_deg + angle_ouverture_deg, name: "A0");
+        GameObject secteur = Sector3D.CreateObject(r_int, r_ext, angle_position_deg, angle_position_deg + angle_ouverture_deg, marge, name: "A0");
         return secteur;
+    }
+
+    GameObject DrawIcon(GameObject secteur, Texture icone)
+    {
+        // A sphere that fully encloses the bounding box.
+        //https://docs.unity3d.com/ScriptReference/Renderer-bounds.html
+        Renderer rend = secteur.GetComponent<Renderer>();
+        Vector3 center = rend.bounds.center;
+        float radius = rend.bounds.extents.magnitude;
+        radius *= Mathf.Pow(0.5f,0.5f);
+
+        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+        mat.mainTexture = icone;
+        quad.GetComponent<Renderer>().material = mat;
+
+        quad.transform.Rotate(90, 0, 0);
+        quad.transform.localScale = new Vector3(radius, radius);
+        quad.transform.position = center + Vector3.up;
+
+        return quad;
     }
 }

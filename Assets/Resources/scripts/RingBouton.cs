@@ -14,6 +14,7 @@ public class RingBouton : MonoBehaviour
     public Color _couleur;
 
     GameObject btn;
+    internal GameObject _icone;
 
     private void Start()
     {

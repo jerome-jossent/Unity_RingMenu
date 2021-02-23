@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_ringmenu.unity
+    path: Assets/Scenes/_ringmenu.unity
     guid: cdd0ae6061fa4aa428fba6a7fcbab581
   m_configObjects: {}
