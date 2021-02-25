@@ -3,20 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sector3D_demo : MonoBehaviour
+public class Sector3D_demo_fromList1 : MonoBehaviour
 {
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau0_btn;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau1_btn;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau2_btn;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau3_btn;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau4_btn;
-
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau0_taille;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau1_taille;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau2_taille;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau3_taille;
-    [SerializeField] UnityEngine.UI.Slider _sld_anneau4_taille;
-
+    [SerializeField] UnityEngine.UI.Slider _sld_btns;
     [SerializeField] UnityEngine.UI.Slider _sld_marge;
 
     [SerializeField] UnityEngine.UI.Text _txt_btns;
@@ -25,10 +14,11 @@ public class Sector3D_demo : MonoBehaviour
 
     [SerializeField] GameObject Spawn;
 
-    GameObject ringMenu;
+    GameObject ringMenus;
     RingBouton rb_previsous = null;
     Color[] colors;
     int btn_index_onthisRing;
+    int btn_index;
     Dictionary<string, RingBouton> dico;
     UnityEngine.Object[] textures;
 
@@ -51,6 +41,8 @@ public class Sector3D_demo : MonoBehaviour
         {
             //Debug.Log(hit.transform.name);
             _txt_btn.text = hit.transform.name;
+            if (!dico.ContainsKey(hit.transform.name))
+                Debug.Log(hit.transform.name);
             RingBouton rb = dico[hit.transform.name];
             if (rb != rb_previsous)
             {
@@ -65,7 +57,11 @@ public class Sector3D_demo : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 if (rb != null)
+                {
                     rb._SetSelectedColor();
+                    GameObject selectedRingMenu = hit.transform.parent.parent.gameObject;
+                    MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, @"E:\" + selectedRingMenu.name);
+                }
             }
         }
         else
@@ -106,50 +102,93 @@ public class Sector3D_demo : MonoBehaviour
 
     public void _SliderValueChange()
     {
-        Destroy(ringMenu);
-        ringMenu = new GameObject();
+        Destroy(ringMenus);
 
-        int R0_B = (int)_sld_anneau0_btn.value;
-        int R1_B = (int)_sld_anneau1_btn.value;
-        int R2_B = (int)_sld_anneau2_btn.value;
-        int R3_B = (int)_sld_anneau3_btn.value;
-        int R4_B = (int)_sld_anneau4_btn.value;
-        _txt_btns.text = (R0_B + R1_B + R2_B + R3_B + R4_B) + " boutons";
+        int nbr_buttons = (int)_sld_btns.value;
+        Dictionary<int, List<List<int>>> operations = arc.Operation.OperationsGenerator(nbr_buttons, nbr_buttons, nbr_buttons);
+        if (operations.ContainsKey(nbr_buttons))
+            _txt_btns.text = $"{nbr_buttons} boutons [{operations[nbr_buttons].Count}]";
+        else
+            _txt_btns.text = $"{nbr_buttons} boutons [0]";
 
-        float R0_R = _sld_anneau0_taille.value;
-        float R1_R = _sld_anneau1_taille.value;
-        float R2_R = _sld_anneau2_taille.value;
-        float R3_R = _sld_anneau3_taille.value;
-        float R4_R = _sld_anneau4_taille.value;
-
-        float marge = _sld_marge.value; ;
-        dico = new Dictionary<string, RingBouton>();
-
-        try
-        {
-            GameObject a0 = DrawRing(0, R0_R, R0_R, R0_B, marge);
-            GameObject a1 = DrawRing(1, R0_R + R1_R, R1_R, R1_B, marge);
-            GameObject a2 = DrawRing(2, R0_R + R1_R + R2_R, R2_R, R2_B, marge);
-            GameObject a3 = DrawRing(3, R0_R + R1_R + R2_R + R3_R, R3_R, R3_B, marge);
-            GameObject a4 = DrawRing(4, R0_R + R1_R + R2_R + R3_R + R4_R, R4_R, R4_B, marge);
-            a0.transform.parent = ringMenu.transform;
-            a1.transform.parent = ringMenu.transform;
-            a2.transform.parent = ringMenu.transform;
-            a3.transform.parent = ringMenu.transform;
-            a4.transform.parent = ringMenu.transform;
-            _txt_debug.text = "";
-        }
-        catch (Exception ex)
-        {
-            _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
-        }
-
-        ringMenu.transform.position = Spawn.transform.position;
-        ringMenu.transform.rotation = Spawn.transform.rotation;
-        ringMenu.transform.localScale = Spawn.transform.localScale;
+        ringMenus = COMPUTE(operations);
+        ringMenus.transform.position = Spawn.transform.position;
+        ringMenus.transform.rotation = Spawn.transform.rotation;
+        ringMenus.transform.localScale = Spawn.transform.localScale;
     }
 
-    GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge)
+    private GameObject COMPUTE(Dictionary<int, List<List<int>>> operations)
+    {
+        dico = new Dictionary<string, RingBouton>();
+
+        GameObject groups = new GameObject("Groups");
+        foreach (int x in operations.Keys)
+        {
+            GameObject group = new GameObject("Btn " + x);
+            int version = 0;
+
+            float rayon_ext_prec = 0;
+            foreach (List<int> entiers in operations[x])
+            {
+                GameObject ringMenu = new GameObject($"RingMenu {x}btn v{version}");
+
+                float marge = _sld_marge.value;
+                float epaisseur = 100;
+                float rayon_ext = 0;
+                int ringindex = 0;
+                btn_index = 0;
+
+                foreach (int nbrbuttons_by_ring in entiers)
+                {
+                    try
+                    {
+                        rayon_ext += epaisseur;
+                        GameObject ring = DrawRing(ringindex, rayon_ext, epaisseur, nbrbuttons_by_ring, marge, group.name + " " + ringMenu.name + " ");
+                        ring.transform.parent = ringMenu.transform;
+                        _txt_debug.text = "";
+                        ringindex++;
+                        //MeshExporter.ObjExporter.MeshToFile(ring, @"E:\" + ring.name + ".obj");
+                    }
+                    catch (Exception ex)
+                    {
+                        _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
+                    }
+                }
+                version++;
+
+                ringMenu.transform.parent = group.transform;
+
+                //MeshExporter.ObjExporter.MeshToFile(ringMenu, @"E:\" + ringMenu.name + ".obj");
+
+                rayon_ext_prec = rayon_ext * 2 + rayon_ext_prec;
+                ringMenu.transform.Translate(rayon_ext_prec, 0, 0);
+
+                //optimisation sur 2 paramètres :
+                //- p position sur l'axe centre du cercle, barycentre (position comprise entre rayon max et rayon min)
+                //- t taille de l'icone
+                //La meilleure solution p aura t maximum
+
+                // first values
+                // p0 = barycentre (parfait ou trop prêt du centre)
+                // t0 = 1
+                // test : est ce qu'aucun pixels du carré n'est vide (on a une image vide avec "seulement" le bouton de dessiné)
+                // ==> on augmente t
+                // quand tmax atteint pour p donné, on change de p, avec p compris entre p0 et p sur axe avec D = rayon_ext - t
+
+                // puis dichtomie pour p en maximisant t à chaque essai.
+
+
+                //MeshExporter.ObjExporter.CombineMeshes(ringMenu);
+                //MeshExporter.ObjExporter.MeshToFile(ringMenu, @"E:\" + ringMenu.name + ".obj");
+            }
+
+
+            group.transform.parent = groups.transform;
+        }
+        return groups;
+    }
+
+    GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge, string prename)
     {
         btn_index_onthisRing = 0;
         GameObject go = new GameObject();
@@ -160,35 +199,40 @@ public class Sector3D_demo : MonoBehaviour
 
         for (int i = 0; i < nbrboutons; i++)
         {
-            //Button b = new Button();
             float angle_position_deg = angle_position_deg_init + i * angle_ouverture_deg;
-
+            //bouton
             GameObject btn = DrawButton(r_ext,
                                 r_int,
                                 angle_ouverture_deg,
                                 angle_position_deg,
                                 marge);
-            btn.name = "ring_" + ring_index + "_btn_" + i;
+            btn.name = prename + "ring_" + ring_index + "_btn_" + i;
             btn.transform.parent = go.transform;
 
+            //MeshExporter.ObjExporter.MeshToFile(btn, @"E:\" + btn.name + ".obj");
 
-            Texture texture = (Texture)textures[btn_index_onthisRing];
-            //Resources.Load<Texture>("Emoticons/anger") as Texture;
+            int index = btn_index;
+            while (index >= textures.Length)
+                index -= textures.Length;
 
+            //icône
+            Texture texture = (Texture)textures[index];
             GameObject icn = DrawIcon(btn, texture);
             if (icn != null)
                 icn.transform.parent = go.transform;
 
+            //script de gestion du bouton (index, nom, couleurs, ...) 
             RingBouton rb = btn.AddComponent<RingBouton>();
             rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
-            rb._SetColors(colors[btn_index_onthisRing]);
+            rb._SetColors(colors[index]);
             rb._icone = icn;
 
             dico.Add(btn.name, rb);
 
             btn_index_onthisRing++;
+            btn_index++;
         }
 
         go.name = "Ring_" + ring_index;

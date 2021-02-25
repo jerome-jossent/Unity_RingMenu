@@ -68,12 +68,14 @@
     <Compile Include="Assets\Resources\scripts\GameObjectSelectionManager.cs" />
     <Compile Include="Assets\Resources\scripts\MaterialSetColor.cs" />
     <Compile Include="Assets\Resources\scripts\ObjExporter.cs" />
+    <Compile Include="Assets\Resources\scripts\Operation.cs" />
     <Compile Include="Assets\Resources\scripts\PrintMesh.cs" />
     <Compile Include="Assets\Resources\scripts\QuadCreator.cs" />
     <Compile Include="Assets\Resources\scripts\RingBouton.cs" />
     <Compile Include="Assets\Resources\scripts\ScriptsManager.cs" />
     <Compile Include="Assets\Resources\scripts\Sector3D.cs" />
     <Compile Include="Assets\Resources\scripts\Sector3D_demo.cs" />
+    <Compile Include="Assets\Resources\scripts\Sector3D_demo_fromList1.cs" />
     <Compile Include="Assets\Resources\scripts\TransformAGOFromInputs.cs" />
     <Compile Include="Assets\Resources\scripts\Triangle3D.cs" />
     <Compile Include="Assets\Resources\scripts\Triangle3DPrimitive.cs" />
