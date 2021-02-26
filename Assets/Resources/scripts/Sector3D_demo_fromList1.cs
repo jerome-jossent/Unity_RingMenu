@@ -16,6 +16,8 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
     [SerializeField] TMPro.TMP_Text _txt_obj;
     [SerializeField] TMPro.TMP_Text _txt_mtl;
 
+    [SerializeField] string pathToSaveOBJs;
+
     [SerializeField] GameObject Spawn;
 
     GameObject ringMenus;
@@ -64,39 +66,38 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                 {
                     rb._SetSelectedColor();
                     GameObject selectedRingMenu = hit.transform.parent.parent.gameObject;
+                    MeshExporter.ObjExporter.OBJ_MTL_TXT om = MeshExporter.ObjExporter.MeshToString(selectedRingMenu, selectedRingMenu.name);
+                    //display in 2 textboxes
+                    _if_obj.text = om.obj;
+                    _if_mtl.text = om.mtl;
 
+                    _txt_obj.text = om.objfilename;
+                    _txt_mtl.text = om.mtlfilename;
+#if UNITY_WEBGL && !UNITY_EDITOR
                     try
                     {
-#if UNITY_WEBGL
-                        MeshExporter.ObjExporter.OBJ_MTL_TXT om = MeshExporter.ObjExporter.MeshToString(selectedRingMenu, selectedRingMenu.name);
-                        //display in 2 textboxes
-                        _if_obj.text = om.obj;
-                        _if_mtl.text = om.mtl;
-
-                        _txt_obj.text = om.objfilename;
-                        _txt_mtl.text = om.mtlfilename;
-
                         //save to disk // download file ??
-                        MeshExporter.ObjExporter.OBJ_MTL_TXT.ToFile(om, @"E:\testjj");
-#else
-                        MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, @"E:\");
-#endif
+                        MeshExporter.ObjExporter.OBJ_MTL_TXT.ToFile(om);
                         _txt_debug.text = "";
                     }
                     catch (Exception ex)
                     {
                         _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
                     }
-
+#else
+                    //save to disk // download file ??
+                    MeshExporter.ObjExporter.OBJ_MTL_TXT.ToFile(om);
+                //MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, pathToSaveOBJs + selectedRingMenu.name);
+#endif
                 }
             }
-        }
-        else
-        {
-            _txt_btn.text = "";
-            if (rb_previsous != null)
-                rb_previsous._SetNormalColor();
-            rb_previsous = null;
+            else
+            {
+                _txt_btn.text = "";
+                if (rb_previsous != null)
+                    rb_previsous._SetNormalColor();
+                rb_previsous = null;
+            }
         }
     }
 
