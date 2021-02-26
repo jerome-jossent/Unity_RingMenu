@@ -7,34 +7,71 @@ using System.Collections.Generic;
 namespace MeshExporter
 {
     //http://wiki.unity3d.com/index.php/ObjExporter
-
     //(https://stackoverflow.com/questions/46733430/convert-mesh-to-stl-obj-fbx-in-runtime)
+
     public static class ObjExporter
     {
+        public class OBJ_MTL_TXT
+        {
+            public string obj, mtl;
+            public string objfilename, mtlfilename;
+
+            public static void ToFile(OBJ_MTL_TXT obj_mtl_txt, string directory = "")
+            {
+                if (directory != "")
+                {
+                    DirectoryInfo di = new DirectoryInfo(directory);
+                    if (!di.Exists)
+                        di.Create();
+
+                    obj_mtl_txt.objfilename = di.FullName + "\\" + obj_mtl_txt.objfilename;
+                    obj_mtl_txt.mtlfilename = di.FullName + "\\" + obj_mtl_txt.mtlfilename;                   
+                }
+
+                using (StreamWriter sw = new StreamWriter(obj_mtl_txt.mtlfilename))
+                    sw.Write(obj_mtl_txt.mtl);
+                using (StreamWriter sw = new StreamWriter(obj_mtl_txt.objfilename))
+                    sw.Write(obj_mtl_txt.obj);
+            }
+        }
+
         public static void MeshToFile(GameObject go, string filename)
+        {
+            OBJ_MTL_TXT om = MeshToString(go, filename);
+            OBJ_MTL_TXT.ToFile(om, filename);
+        }
+
+
+        public static OBJ_MTL_TXT MeshToString(GameObject go, string filename)
         {
             Dictionary<string, string> MTLS = new Dictionary<string, string>();
             filename = filename.Replace(" ", "_");
 
             FileInfo fi = new FileInfo(filename);
+            string objFileName = fi.Name + ".obj";
+            string mtlFileName = fi.Name + ".mtl";
 
             int indexLastTriangle = 0;
-            string chaineOBJ = "#JJO\nmtllib " + fi.Name + ".mtl\n\n";
+            string chaineOBJ = "#JJO\nmtllib " + mtlFileName + "\n\n";
             MeshToString(go, MTLS, ref chaineOBJ, ref indexLastTriangle);
 
             StringBuilder sb = new StringBuilder();
+            sb.Append("#JJO\n");
             foreach (string clef in MTLS.Keys)
             {
                 sb.Append("newmtl " + clef).Append("\n");
                 sb.Append(MTLS[clef]).Append("\n");
                 sb.Append("\n");
             }
-            using (StreamWriter sw = new StreamWriter(filename + ".mtl"))
-                sw.Write(sb.ToString());
 
-            using (StreamWriter sw = new StreamWriter(filename + ".obj"))
-                sw.Write(chaineOBJ);
-
+            OBJ_MTL_TXT om = new OBJ_MTL_TXT()
+            {
+                mtl = sb.ToString(),
+                obj = chaineOBJ,
+                objfilename = objFileName,
+                mtlfilename = mtlFileName
+            };
+            return om;
         }
 
         public static void MeshToString(GameObject go, Dictionary<string, string> MTLS, ref string chaineOBJ, ref int indexLastTriangle)

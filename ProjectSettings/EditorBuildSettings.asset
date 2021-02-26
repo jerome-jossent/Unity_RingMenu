@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/_ringmenu.unity
     guid: cdd0ae6061fa4aa428fba6a7fcbab581
+  - enabled: 1
+    path: Assets/Scenes/_ringmenu_fromList_1.unity
+    guid: e70362f1166f6ec4db2523a8dfdb36d6
   m_configObjects: {}

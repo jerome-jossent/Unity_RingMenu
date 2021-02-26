@@ -11,6 +11,10 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text _txt_btns;
     [SerializeField] UnityEngine.UI.Text _txt_btn;
     [SerializeField] UnityEngine.UI.Text _txt_debug;
+    [SerializeField] TMPro.TMP_InputField _if_obj;
+    [SerializeField] TMPro.TMP_InputField _if_mtl;
+    [SerializeField] TMPro.TMP_Text _txt_obj;
+    [SerializeField] TMPro.TMP_Text _txt_mtl;
 
     [SerializeField] GameObject Spawn;
 
@@ -60,7 +64,30 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                 {
                     rb._SetSelectedColor();
                     GameObject selectedRingMenu = hit.transform.parent.parent.gameObject;
-                    MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, @"E:\" + selectedRingMenu.name);
+
+                    try
+                    {
+#if UNITY_WEBGL
+                        MeshExporter.ObjExporter.OBJ_MTL_TXT om = MeshExporter.ObjExporter.MeshToString(selectedRingMenu, selectedRingMenu.name);
+                        //display in 2 textboxes
+                        _if_obj.text = om.obj;
+                        _if_mtl.text = om.mtl;
+
+                        _txt_obj.text = om.objfilename;
+                        _txt_mtl.text = om.mtlfilename;
+
+                        //save to disk // download file ??
+                        MeshExporter.ObjExporter.OBJ_MTL_TXT.ToFile(om, @"E:\testjj");
+#else
+                        MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, @"E:\");
+#endif
+                        _txt_debug.text = "";
+                    }
+                    catch (Exception ex)
+                    {
+                        _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
+                    }
+
                 }
             }
         }
@@ -147,7 +174,6 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                         ring.transform.parent = ringMenu.transform;
                         _txt_debug.text = "";
                         ringindex++;
-                        //MeshExporter.ObjExporter.MeshToFile(ring, @"E:\" + ring.name + ".obj");
                     }
                     catch (Exception ex)
                     {
@@ -157,8 +183,6 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                 version++;
 
                 ringMenu.transform.parent = group.transform;
-
-                //MeshExporter.ObjExporter.MeshToFile(ringMenu, @"E:\" + ringMenu.name + ".obj");
 
                 rayon_ext_prec = rayon_ext * 2 + rayon_ext_prec;
                 ringMenu.transform.Translate(rayon_ext_prec, 0, 0);
@@ -177,9 +201,6 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
 
                 // puis dichtomie pour p en maximisant t à chaque essai.
 
-
-                //MeshExporter.ObjExporter.CombineMeshes(ringMenu);
-                //MeshExporter.ObjExporter.MeshToFile(ringMenu, @"E:\" + ringMenu.name + ".obj");
             }
 
 
@@ -208,8 +229,6 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                                 marge);
             btn.name = prename + "ring_" + ring_index + "_btn_" + i;
             btn.transform.parent = go.transform;
-
-            //MeshExporter.ObjExporter.MeshToFile(btn, @"E:\" + btn.name + ".obj");
 
             int index = btn_index;
             while (index >= textures.Length)
