@@ -27,7 +27,7 @@ namespace MeshExporter
             {
                 sb.Append("newmtl " + clef).Append("\n");
                 sb.Append(MTLS[clef]).Append("\n");
-                sb.Append("\n");                
+                sb.Append("\n");
             }
             using (StreamWriter sw = new StreamWriter(filename + ".mtl"))
                 sw.Write(sb.ToString());
@@ -37,7 +37,7 @@ namespace MeshExporter
 
         }
 
-        public static void MeshToString(GameObject go, Dictionary<string,string> MTLS, ref string chaineOBJ, ref int indexLastTriangle)
+        public static void MeshToString(GameObject go, Dictionary<string, string> MTLS, ref string chaineOBJ, ref int indexLastTriangle)
         {
             int jj = indexLastTriangle;
             MeshFilter mf = go.GetComponent<MeshFilter>();
@@ -48,7 +48,7 @@ namespace MeshExporter
                 Material[] mats = rd.sharedMaterials;
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append("g ").Append(mf.name).Append("\n");
+                sb.Append("g ").Append(mf.name.Replace(" ", "_")).Append("\n");
 
                 foreach (Vector3 v in m.vertices)
                     sb.Append(string.Format("v {0} {1} {2}\n", v.x, v.y, v.z).Replace(",", "."));
@@ -64,13 +64,17 @@ namespace MeshExporter
                 int max = jj;
                 for (int material = 0; material < m.subMeshCount; material++)
                 {
+                    Material mat = mats[material];
+                    string title = string.Format($"{mat.name}_{(int)(mat.color.r * 1000)}_{(int)(mat.color.g * 1000)}_{(int)(mat.color.b * 1000)}");
+                    title = title.Replace("/", "_");
+                    //title = mat.name;
+
                     sb.Append("\n");
-                    sb.Append("usemtl ").Append(mats[material].name).Append("\n");
-                    sb.Append("usemap ").Append(mats[material].name).Append("\n");
-                    if (!MTLS.ContainsKey(mats[material].name))
+                    sb.Append("usemtl ").Append(title).Append("\n");
+                    sb.Append("usemap ").Append(title).Append("\n");
+                    if (!MTLS.ContainsKey(title))
                     {
-                        Material mat = mats[material];
-                        MTLS.Add(mats[material].name, string.Format($"Kd {mat.color.r} {mat.color.g} {mat.color.b} {mat.color.a}").Replace(",", "."));
+                        MTLS.Add(title, string.Format($"Kd {mat.color.r} {mat.color.g} {mat.color.b}").Replace(",", "."));
                     }
 
                     int[] t = m.GetTriangles(material);
@@ -87,8 +91,8 @@ namespace MeshExporter
                 chaineOBJ += sb.ToString();
             }
 
-            for (int i = 0; i < go.transform.childCount; i++)            
-                MeshToString(go.transform.GetChild(i).gameObject, MTLS, ref chaineOBJ, ref indexLastTriangle);            
+            for (int i = 0; i < go.transform.childCount; i++)
+                MeshToString(go.transform.GetChild(i).gameObject, MTLS, ref chaineOBJ, ref indexLastTriangle);
 
         }
 
