@@ -13,8 +13,10 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text _txt_debug;
     [SerializeField] TMPro.TMP_InputField _if_obj;
     [SerializeField] TMPro.TMP_InputField _if_mtl;
+    [SerializeField] TMPro.TMP_InputField _if_fbx;
     [SerializeField] TMPro.TMP_Text _txt_obj;
     [SerializeField] TMPro.TMP_Text _txt_mtl;
+    [SerializeField] TMPro.TMP_Text _txt_fbx;
 
     [SerializeField] string pathToSaveOBJs;
 
@@ -66,13 +68,34 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                 {
                     rb._SetSelectedColor();
                     GameObject selectedRingMenu = hit.transform.parent.parent.gameObject;
+
+                    //OBJ & MTL
                     MeshExporter.ObjExporter.OBJ_MTL_TXT om = MeshExporter.ObjExporter.MeshToString(selectedRingMenu, selectedRingMenu.name);
                     //display in 2 textboxes
-                    _if_obj.text = om.obj;
-                    _if_mtl.text = om.mtl;
+                    //_if_obj.text = om.obj;
+                    //_if_mtl.text = om.mtl;
 
                     _txt_obj.text = om.objfilename;
                     _txt_mtl.text = om.mtlfilename;
+                    GC.Collect();
+
+                    //FBX
+                    string path = selectedRingMenu.name + ".fbx";
+                    _if_fbx.text = "";
+                    
+                    string fbxfile = UnityFBXExporter.FBXExporter.MeshToString(selectedRingMenu, path, false, false);
+
+                    GUIUtility.systemCopyBuffer = fbxfile;
+                    //TextEditor te = new TextEditor();
+                    //te.text = fbxfile;
+                    //te.SelectAll();
+                    //te.Copy();
+
+
+
+                    _txt_fbx.text = path;
+                    GC.Collect();
+
 #if UNITY_WEBGL && !UNITY_EDITOR
                     try
                     {
@@ -85,9 +108,14 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                         _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
                     }
 #else
-                    //save to disk // download file ??
+                    //save to disk OBJ
                     MeshExporter.ObjExporter.OBJ_MTL_TXT.ToFile(om);
-                //MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, pathToSaveOBJs + selectedRingMenu.name);
+
+                    //save to disk FBX
+                    UnityFBXExporter.FBXExporter.ExportGameObjToFBX(selectedRingMenu, path, false, false);
+                    //UnityFBXExporter.FBXExporter.ExportGameObjToFBX(selectedRingMenu, path, true, true);
+
+                    //MeshExporter.ObjExporter.MeshToFile(selectedRingMenu, pathToSaveOBJs + selectedRingMenu.name);
 #endif
                 }
             }
@@ -235,19 +263,26 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
             while (index >= textures.Length)
                 index -= textures.Length;
 
-            //icône
-            Texture texture = (Texture)textures[index];
-            GameObject icn = DrawIcon(btn, texture);
-            if (icn != null)
-                icn.transform.parent = go.transform;
-
             //script de gestion du bouton (index, nom, couleurs, ...) 
             RingBouton rb = btn.AddComponent<RingBouton>();
             rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
             rb._SetColors(colors[index]);
-            rb._icone = icn;
+
+
+
+
+
+
+
+            ////icône
+            //Texture texture = (Texture)textures[index];
+            //GameObject icn = DrawIcon(btn, texture);
+            //if (icn != null)
+            //    icn.transform.parent = go.transform;
+
+            //rb._icone = icn;
 
             dico.Add(btn.name, rb);
 

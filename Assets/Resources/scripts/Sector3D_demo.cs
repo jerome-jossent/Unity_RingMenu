@@ -23,6 +23,20 @@ public class Sector3D_demo : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text _txt_btn;
     [SerializeField] UnityEngine.UI.Text _txt_debug;
 
+    [SerializeField] TMPro.TMP_InputField _if_obj;
+    [SerializeField] TMPro.TMP_InputField _if_mtl;
+    [SerializeField] TMPro.TMP_InputField _if_fbx;
+    [SerializeField] TMPro.TMP_Text _txt_obj;
+    [SerializeField] TMPro.TMP_Text _txt_mtl;
+    [SerializeField] TMPro.TMP_Text _txt_fbx;
+
+    [SerializeField] UnityEngine.UI.InputField _if_obj2;
+    [SerializeField] UnityEngine.UI.InputField _if_mtl2;
+    [SerializeField] UnityEngine.UI.InputField _if_fbx2;
+    
+    
+    [SerializeField] ToHTML tohtml;
+
     [SerializeField] GameObject Spawn;
 
     GameObject ringMenu;
@@ -86,7 +100,7 @@ public class Sector3D_demo : MonoBehaviour
             colors[i] = Color.HSVToRGB(1f * i / nbrcolor, 1f, 1f);
             colors[i].a = alpha;
         }
-        return colors;
+        //return colors;
 
         //distribuer les couleurs : échanger 1 couleur sur 2
         for (int i = 0; i < colors.Length / 2; i++)
@@ -114,7 +128,11 @@ public class Sector3D_demo : MonoBehaviour
         int R2_B = (int)_sld_anneau2_btn.value;
         int R3_B = (int)_sld_anneau3_btn.value;
         int R4_B = (int)_sld_anneau4_btn.value;
-        _txt_btns.text = (R0_B + R1_B + R2_B + R3_B + R4_B) + " boutons";
+
+        int nbrButtons = R0_B + R1_B + R2_B + R3_B + R4_B;
+        _txt_btns.text = nbrButtons + " boutons";
+
+        colors = DistributeColors(nbrButtons);
 
         float R0_R = _sld_anneau0_taille.value;
         float R1_R = _sld_anneau1_taille.value;
@@ -124,6 +142,8 @@ public class Sector3D_demo : MonoBehaviour
 
         float marge = _sld_marge.value; ;
         dico = new Dictionary<string, RingBouton>();
+
+        btn_index_onthisRing = 0;
 
         try
         {
@@ -141,7 +161,11 @@ public class Sector3D_demo : MonoBehaviour
         }
         catch (Exception ex)
         {
+#if UNITY_EDITOR
+            Debug.LogError(ex);
+#else
             _txt_debug.text = ex.Message + "\n\n" + ex.StackTrace;
+#endif
         }
 
         ringMenu.transform.position = Spawn.transform.position;
@@ -149,9 +173,37 @@ public class Sector3D_demo : MonoBehaviour
         ringMenu.transform.localScale = Spawn.transform.localScale;
     }
 
+    public void _ExportToOBJMTL()
+    {
+        //OBJ & MTL
+        MeshExporter.ObjExporter.OBJ_MTL_TXT data = MeshExporter.ObjExporter.MeshToString(ringMenu, ringMenu.name);
+        //_if_obj.text = data.obj;
+        _txt_obj.text = data.objfilename;
+        //_if_mtl.text = data.mtl;
+        _txt_mtl.text = data.mtlfilename;
+
+        _if_obj2.text = data.obj;
+        _if_mtl2.text = data.mtl;
+
+        tohtml._OBJ_TO_HTML(data.obj);
+        tohtml._MTL_TO_HTML(data.mtl);
+    }
+
+    public void _ExportToFBX()
+    {
+        //FBX
+        string path = ringMenu.name + ".fbx";
+        string fbxfile = UnityFBXExporter.FBXExporter.MeshToString(ringMenu, path, false, false);
+        //_if_fbx.text = fbxfile;
+        _if_fbx2.text = fbxfile;
+        //_if_fbx2.SelectAll();
+        _txt_fbx.text = path;
+        tohtml._FBX_TO_HTML(fbxfile);
+    }
+
     GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge)
     {
-        btn_index_onthisRing = 0;
+        //btn_index_onthisRing = 0;
         GameObject go = new GameObject();
         float r_int = r_ext - epaisseur;
 
@@ -171,20 +223,21 @@ public class Sector3D_demo : MonoBehaviour
             btn.name = "ring_" + ring_index + "_btn_" + i;
             btn.transform.parent = go.transform;
 
-
-            Texture texture = (Texture)textures[btn_index_onthisRing];
-            //Resources.Load<Texture>("Emoticons/anger") as Texture;
-
-            GameObject icn = DrawIcon(btn, texture);
-            if (icn != null)
-                icn.transform.parent = go.transform;
-
             RingBouton rb = btn.AddComponent<RingBouton>();
             rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
             rb._SetColors(colors[btn_index_onthisRing]);
-            rb._icone = icn;
+
+            //icône
+            if (false)
+            {
+                Texture texture = (Texture)textures[btn_index_onthisRing];
+                GameObject icn = DrawIcon(btn, texture);
+                if (icn != null)
+                    icn.transform.parent = go.transform;
+                rb._icone = icn;
+            }
 
             dico.Add(btn.name, rb);
 
