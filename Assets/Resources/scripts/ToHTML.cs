@@ -31,24 +31,13 @@ public class ToHTML : MonoBehaviour
     private static extern void FillCode2(string str);
     [DllImport("__Internal")]
     private static extern void FillCode3(string str);
+    [DllImport("__Internal")]
+    private static extern void FileName1(string str);
+    [DllImport("__Internal")]
+    private static extern void FileName2(string str);
+    [DllImport("__Internal")]
+    private static extern void FileName3(string str);
 
-    void Start()
-    {
-        //Hello();
-
-        //HelloString("This is a string.");
-
-        //float[] myArray = new float[10];
-        //PrintFloatArray(myArray, myArray.Length);
-
-        //int result = AddNumbers(5, 7);
-        //Debug.Log(result);
-
-        //Debug.Log(StringReturnValueFunction());
-
-        //var texture = new Texture2D(0, 0, TextureFormat.ARGB32, false);
-        //BindWebGLTexture(texture.GetNativeTexturePtr());
-    }
 
     public void _OBJ_TO_HTML(string obj)
     {
@@ -61,5 +50,18 @@ public class ToHTML : MonoBehaviour
     public void _FBX_TO_HTML(string fbx)
     {
         FillCode3(fbx);
+    }
+
+    public void _String_TO_FileName1(string txt)
+    {
+        FileName1(txt);
+    }
+    public void _String_TO_FileName2(string txt)
+    {
+        FileName2(txt);
+    }
+    public void _String_TO_FileName3(string txt)
+    {
+        FileName3(txt);
     }
 }

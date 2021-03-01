@@ -178,15 +178,17 @@ public class Sector3D_demo : MonoBehaviour
         //OBJ & MTL
         MeshExporter.ObjExporter.OBJ_MTL_TXT data = MeshExporter.ObjExporter.MeshToString(ringMenu, ringMenu.name);
         //_if_obj.text = data.obj;
-        _txt_obj.text = data.objfilename;
-        //_if_mtl.text = data.mtl;
-        _txt_mtl.text = data.mtlfilename;
+        //_txt_obj.text = data.objfilename;
+        ////_if_mtl.text = data.mtl;
+        //_txt_mtl.text = data.mtlfilename;
 
-        _if_obj2.text = data.obj;
-        _if_mtl2.text = data.mtl;
+        //_if_obj2.text = data.obj;
+        //_if_mtl2.text = data.mtl;
 
         tohtml._OBJ_TO_HTML(data.obj);
+        tohtml._String_TO_FileName1(data.objfilename);
         tohtml._MTL_TO_HTML(data.mtl);
+        tohtml._String_TO_FileName2(data.mtlfilename);
     }
 
     public void _ExportToFBX()
@@ -194,11 +196,12 @@ public class Sector3D_demo : MonoBehaviour
         //FBX
         string path = ringMenu.name + ".fbx";
         string fbxfile = UnityFBXExporter.FBXExporter.MeshToString(ringMenu, path, false, false);
-        //_if_fbx.text = fbxfile;
-        _if_fbx2.text = fbxfile;
-        //_if_fbx2.SelectAll();
-        _txt_fbx.text = path;
+        ////_if_fbx.text = fbxfile;
+        //_if_fbx2.text = fbxfile;
+        ////_if_fbx2.SelectAll();
+        //_txt_fbx.text = path;
         tohtml._FBX_TO_HTML(fbxfile);
+        tohtml._String_TO_FileName3(path);
     }
 
     GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge)

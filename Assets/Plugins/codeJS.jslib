@@ -6,41 +6,24 @@ mergeInto(LibraryManager.library, {
 
   HelloString: function (str) {
 	window.alert(Pointer_stringify(str));
-  },
-  
+  },  
   
   FillCode1: function (str) {
 	document.getElementById('code1').value = Pointer_stringify(str);
-    //window.alert(Pointer_stringify(str));
   },  
   FillCode2: function (str) {
 	document.getElementById('code2').value = Pointer_stringify(str);
-    //window.alert(Pointer_stringify(str));
   },  
   FillCode3: function (str) {
 	document.getElementById('code3').value = Pointer_stringify(str);
-    //window.alert(Pointer_stringify(str));
+  }, 
+  FileName1: function (str) {
+	document.getElementById('code1_nom').value = Pointer_stringify(str);
   },
-
-  PrintFloatArray: function (array, size) {
-    for(var i = 0; i < size; i++)
-    console.log(HEAPF32[(array >> 2) + i]);
+  FileName2: function (str) {
+	document.getElementById('code2_nom').value = Pointer_stringify(str);
   },
-
-  AddNumbers: function (x, y) {
-    return x + y;
+  FileName3: function (str) {
+	document.getElementById('code3_nom').value = Pointer_stringify(str);
   },
-
-  StringReturnValueFunction: function () {
-    var returnStr = "bla";
-    var bufferSize = lengthBytesUTF8(returnStr) + 1;
-    var buffer = _malloc(bufferSize);
-    stringToUTF8(returnStr, buffer, bufferSize);
-    return buffer;
-  },
-
-  BindWebGLTexture: function (texture) {
-    GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
-  },
-
 });
