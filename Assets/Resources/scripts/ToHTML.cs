@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using System;
 
 public class ToHTML : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class ToHTML : MonoBehaviour
     private static extern void FileName2(string str);
     [DllImport("__Internal")]
     private static extern void FileName3(string str);
+    [DllImport("__Internal")]
+    private static extern void ToFile(string str);
 
 
     public void _OBJ_TO_HTML(string obj)
@@ -63,5 +66,10 @@ public class ToHTML : MonoBehaviour
     public void _String_TO_FileName3(string txt)
     {
         FileName3(txt);
+    }
+
+    internal void _String_TO_File(string filename, string txt)
+    {
+        ToFile(filename + "?" + txt);
     }
 }

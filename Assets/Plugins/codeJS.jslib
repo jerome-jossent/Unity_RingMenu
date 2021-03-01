@@ -26,4 +26,18 @@ mergeInto(LibraryManager.library, {
   FileName3: function (str) {
 	document.getElementById('code3_nom').value = Pointer_stringify(str);
   },
+    		
+	ToFile: function (str) {		
+		var pos = Pointer_stringify(str).indexOf("?");		
+		var filename = Pointer_stringify(str).substring(0, pos);
+		var content = Pointer_stringify(str).substring(pos + 1);		
+		
+		uriContent = "data:application/octet-stream," + encodeURIComponent(content);
+		var uri = uriContent;
+		var link = document.createElement('a');
+		link.setAttribute("download", filename);
+		link.setAttribute("href", uri);
+		document.body.appendChild(link);
+		link.click();
+	}
 });

@@ -185,10 +185,13 @@ public class Sector3D_demo : MonoBehaviour
         //_if_obj2.text = data.obj;
         //_if_mtl2.text = data.mtl;
 
-        tohtml._OBJ_TO_HTML(data.obj);
-        tohtml._String_TO_FileName1(data.objfilename);
-        tohtml._MTL_TO_HTML(data.mtl);
-        tohtml._String_TO_FileName2(data.mtlfilename);
+        //tohtml._OBJ_TO_HTML(data.obj);
+        //tohtml._String_TO_FileName1(data.objfilename);
+        //tohtml._MTL_TO_HTML(data.mtl);
+        //tohtml._String_TO_FileName2(data.mtlfilename);
+
+        tohtml._String_TO_File(data.objfilename, data.obj);
+        tohtml._String_TO_File(data.mtlfilename, data.mtl);
     }
 
     public void _ExportToFBX()
@@ -200,8 +203,10 @@ public class Sector3D_demo : MonoBehaviour
         //_if_fbx2.text = fbxfile;
         ////_if_fbx2.SelectAll();
         //_txt_fbx.text = path;
-        tohtml._FBX_TO_HTML(fbxfile);
-        tohtml._String_TO_FileName3(path);
+        //tohtml._FBX_TO_HTML(fbxfile);
+        //tohtml._String_TO_FileName3(path);
+
+        tohtml._String_TO_File(path, fbxfile);
     }
 
     GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge)
