@@ -1,0 +1,63 @@
+<html> 
+	<head>
+		<style>
+			table { border-collapse: collapse; }
+			tr { border: none; }
+			td {border-left: solid 1px #000; }
+		</style>
+		<script src="TemplateData/UnityProgress.js"></script>
+		<script src="Build/UnityLoader.js"></script>
+		<script>
+		  var unityInstance = UnityLoader.instantiate("unityContainer", "Build/RingMenu.json", {onProgress: UnityProgress});
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<script>
+	function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+</script>
+	
+	</head>
+
+  <body> 
+	<table>
+		  <tr>
+			<td VALIGN="TOP" width=300>
+				<h4>OBJ</h4>	
+	<button onclick="copyToClipboard('#code1')">Copy OBJ</button>
+	<textarea id="code1" role="textbox" aria-multiline="true"></textarea>	
+			</td>	
+			
+			<td VALIGN="TOP" width=300>
+				<h4>MTL</h4>
+	<button onclick="copyToClipboard('#code2')">Copy MTL</button>
+	<textarea id="code2" role="textbox" aria-multiline="true"></textarea>
+			</td>
+				
+			<td VALIGN="TOP" width=300>	
+				<h4>FBX</h4>
+	<button onclick="copyToClipboard('#code3')">Copy FBX</button>
+	<textarea id="code3" role="textbox" aria-multiline="true"></textarea>
+				
+			</td>
+		  </tr>  
+		</table>
+	
+	
+	
+	<div class="webgl-content">
+      <div id="unityContainer" style="width: 960px; height: 600px"></div>
+      <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+        <div class="title">RingMenu</div>
+      </div>
+    </div>
+	
+  </body> 
+</html>
