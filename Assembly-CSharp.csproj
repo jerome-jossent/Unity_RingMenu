@@ -67,6 +67,7 @@
     <Compile Include="Assets\Resources\scripts\ClickOnCollider.cs" />
     <Compile Include="Assets\Resources\scripts\GameObjectSelectionManager.cs" />
     <Compile Include="Assets\Resources\scripts\MaterialSetColor.cs" />
+    <Compile Include="Assets\Resources\scripts\Math_JJ.cs" />
     <Compile Include="Assets\Resources\scripts\ObjExporter.cs" />
     <Compile Include="Assets\Resources\scripts\Operation.cs" />
     <Compile Include="Assets\Resources\scripts\PrintMesh.cs" />
