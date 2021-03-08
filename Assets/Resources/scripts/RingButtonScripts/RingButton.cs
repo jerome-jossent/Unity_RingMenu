@@ -2,87 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sector3D : MonoBehaviour
+public class RingButton
 {
-    //public GameObject DrawRing(int ring_index,
-    //                           float r_ext,
-    //                           float epaisseur,
-    //                           int nbrboutons,
-    //                           float marge,
-    //                           Color[] couleurs,
-    //                           Texture[] textures,
-    //                           bool drawIcon = false)
-    //{
-    //    GameObject go = new GameObject();
-    //    float r_int = r_ext - epaisseur;
-    //    float angle_ouverture_deg = (float)360 / nbrboutons;
-    //    float angle_position_deg_init = angle_ouverture_deg / 2;
-
-    //    for (int i = 0; i < nbrboutons; i++)
-    //    {
-    //        float angle_position_deg = angle_position_deg_init + i * angle_ouverture_deg;
-
-    //        GameObject btn = DrawButton(r_ext,
-    //                            r_int,
-    //                            angle_ouverture_deg,
-    //                            angle_position_deg,
-    //                            marge);
-    //        btn.name = "ring_" + ring_index + "_btn_" + i;
-    //        btn.transform.parent = go.transform;
-
-    //        RingButton_Manager rb = btn.AddComponent<RingButton_Manager>();
-    //        rb._name = btn.name;
-    //        rb._ring_index = ring_index;
-    //        rb._index = i;
-    //        rb._SetColors(couleurs[i]);
-
-    //        //icône
-    //        if (drawIcon)
-    //        {
-    //            Texture texture = (Texture)textures[i];
-    //            GameObject icn = DrawIcon(btn, texture);
-    //            if (icn != null)
-    //                icn.transform.parent = go.transform;
-    //            rb._icone = icn;
-    //        }
-
-    //        dico.Add(btn.name, rb);
-    //    }
-
-    //    go.name = "Ring_" + ring_index;
-    //    return go;
-    //}
-
-    public GameObject DrawButton(float r_ext, float r_int, float angle_ouverture_deg, float angle_position_deg, float marge)
+    public static GameObject DrawButton(float r_ext, 
+        float r_int, 
+        float angle_ouverture_deg, 
+        float angle_position_deg, 
+        float marge)
     {
-        GameObject secteur = CreateSector3D(r_int, r_ext, angle_position_deg, angle_position_deg + angle_ouverture_deg, marge, name: "A0");
-        return secteur;
+        return CreateSector3D(r_int, 
+            r_ext, 
+            angle_position_deg, 
+            angle_position_deg + angle_ouverture_deg, 
+            marge, 
+            name: "A0");
     }
 
-    public GameObject DrawIcon(GameObject secteur, Texture icone)
-    {
-        // A sphere that fully encloses the bounding box.
-        //https://docs.unity3d.com/ScriptReference/Renderer-bounds.html
-        Renderer rend = secteur.GetComponent<Renderer>();
-        if (rend == null) return null;
-
-        Vector3 center = rend.bounds.center;
-        float radius = rend.bounds.extents.magnitude;
-        radius *= Mathf.Pow(0.5f, 0.5f);
-
-        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
-        mat.mainTexture = icone;
-        quad.GetComponent<Renderer>().material = mat;
-
-        quad.transform.Rotate(90, 0, 0);
-        quad.transform.localScale = new Vector3(radius, radius);
-        quad.transform.position = center + Vector3.up;
-
-        return quad;
-    }
-
-    public static GameObject CreateSector3D(float rayon_int, float rayon_ext, float angle_debut_deg, float angle_fin_deg, float marge, int? nbrsegments = null, string name = "Sector3D")
+    public static GameObject CreateSector3D(float rayon_int, 
+        float rayon_ext, 
+        float angle_debut_deg, 
+        float angle_fin_deg, 
+        float marge, 
+        int? nbrsegments = null, 
+        string name = "Sector3D")
     {
         //j'ai estimé qu'une "courbure" ne se voyait plus en dessous de 5°
         if (nbrsegments == null)
@@ -218,5 +160,28 @@ public class Sector3D : MonoBehaviour
         mesh.RecalculateTangents();
         return mesh;
         #endregion
+    }
+
+    public static GameObject DrawIcon(GameObject secteur, Texture icone)
+    {
+        // A sphere that fully encloses the bounding box.
+        //https://docs.unity3d.com/ScriptReference/Renderer-bounds.html
+        Renderer rend = secteur.GetComponent<Renderer>();
+        if (rend == null) return null;
+
+        Vector3 center = rend.bounds.center;
+        float radius = rend.bounds.extents.magnitude;
+        radius *= Mathf.Pow(0.5f, 0.5f);
+
+        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+        mat.mainTexture = icone;
+        quad.GetComponent<Renderer>().material = mat;
+
+        quad.transform.Rotate(90, 0, 0);
+        quad.transform.localScale = new Vector3(radius, radius);
+        quad.transform.position = center + Vector3.up;
+
+        return quad;
     }
 }

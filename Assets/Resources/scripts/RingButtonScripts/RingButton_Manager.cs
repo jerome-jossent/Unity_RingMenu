@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RingBouton : MonoBehaviour
+public class RingButton_Manager : MonoBehaviour
 {
     internal string _name;
     internal int _ring_index;
@@ -21,6 +21,7 @@ public class RingBouton : MonoBehaviour
         btn = gameObject;
         _SetNormalColor();
     }
+
     public void _SetColors(Color absolutecolor)
     {
         _couleurhighlight = absolutecolor;
@@ -48,5 +49,4 @@ public class RingBouton : MonoBehaviour
     {
         MaterialSetColor.Colorier(btn, _couleurfonce);
     }
-
 }

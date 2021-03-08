@@ -23,11 +23,11 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
     [SerializeField] GameObject Spawn;
 
     GameObject ringMenus;
-    RingBouton rb_previsous = null;
+    RingButton_Manager rb_previsous = null;
     Color[] colors;
     int btn_index_onthisRing;
     int btn_index;
-    Dictionary<string, RingBouton> dico;
+    Dictionary<string, RingButton_Manager> dico;
     UnityEngine.Object[] textures;
 
     void Start()
@@ -51,7 +51,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
             _txt_btn.text = hit.transform.name;
             if (!dico.ContainsKey(hit.transform.name))
                 Debug.Log(hit.transform.name);
-            RingBouton rb = dico[hit.transform.name];
+            RingButton_Manager rb = dico[hit.transform.name];
             if (rb != rb_previsous)
             {
                 if (rb_previsous != null)
@@ -175,7 +175,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
 
     private GameObject COMPUTE(Dictionary<int, List<List<int>>> operations)
     {
-        dico = new Dictionary<string, RingBouton>();
+        dico = new Dictionary<string, RingButton_Manager>();
 
         GameObject groups = new GameObject("Groups");
         foreach (int x in operations.Keys)
@@ -199,7 +199,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                     try
                     {
                         rayon_ext += epaisseur;
-                        GameObject ring = DrawRing(ringindex, rayon_ext, epaisseur, nbrbuttons_by_ring, marge, group.name + " " + ringMenu.name + " ");
+                        GameObject ring = DrawRing(dico, ringindex, rayon_ext, epaisseur, nbrbuttons_by_ring, marge, group.name + " " + ringMenu.name + " ");
                         ring.transform.parent = ringMenu.transform;
                         _txt_debug.text = "";
                         ringindex++;
@@ -238,7 +238,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
         return groups;
     }
 
-    GameObject DrawRing(int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge, string prename)
+    GameObject DrawRing(Dictionary<string, RingButton_Manager> dico, int ring_index, float r_ext, float epaisseur, int nbrboutons, float marge, string prename)
     {
         btn_index_onthisRing = 0;
         GameObject go = new GameObject();
@@ -264,7 +264,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
                 index -= textures.Length;
 
             //script de gestion du bouton (index, nom, couleurs, ...) 
-            RingBouton rb = btn.AddComponent<RingBouton>();
+            RingButton_Manager rb = btn.AddComponent<RingButton_Manager>();
             rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
@@ -296,7 +296,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
 
     GameObject DrawButton(float r_ext, float r_int, float angle_ouverture_deg, float angle_position_deg, float marge)
     {
-        GameObject secteur = Sector3D.CreateObject(r_int, r_ext, angle_position_deg, angle_position_deg + angle_ouverture_deg, marge, name: "A0");
+        GameObject secteur = Sector3D.CreateSector3D(r_int, r_ext, angle_position_deg, angle_position_deg + angle_ouverture_deg, marge, name: "A0");
         return secteur;
     }
 
