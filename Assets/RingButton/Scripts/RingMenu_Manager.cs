@@ -9,6 +9,11 @@ public class RingMenu_Manager : MonoBehaviour
     RingButton_Manager rb_previsous = null;
     public string _selected_RingButton_name;
     public RingButton_Manager _selected_RingButton_Manager;
+
+    public event EventHandler<EventArgs> _OnSelected;
+    public event EventHandler<EventArgs> _OnEnter;
+    public event EventHandler<EventArgs> _OnExit;
+
     internal void _ListAllButtons()
     {
         _buttons = new Dictionary<string, RingButton_Manager>();
@@ -17,30 +22,43 @@ public class RingMenu_Manager : MonoBehaviour
             _buttons.Add(rbms[i]._name, rbms[i]);
     }
 
-    void Update()
+    public void _InteractionManager(Ray ray, bool select)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            //Debug.Log(hit.transform.name);
-            _selected_RingButton_name = hit.transform.name;
-            RingButton_Manager rb = _buttons[hit.transform.name];
-            _selected_RingButton_Manager = rb;
-            if (rb != rb_previsous)
-            {
-                if (rb_previsous != null)
-                    rb_previsous._SetNormalColor();
+            if (!_buttons.ContainsKey(hit.transform.name))
+                return;
 
-                if (rb != null)
-                    rb._SetHighlightColor();
-                rb_previsous = rb;
+            _selected_RingButton_name = hit.transform.name;
+            RingButton_Manager rbm = _buttons[_selected_RingButton_name];
+            _selected_RingButton_Manager = rbm;
+            if (rbm != rb_previsous)
+            {
+                //reset couleur de l'ancien bouton
+                if (rb_previsous != null)
+                {
+                    rb_previsous._SetNormalColor();
+                    _OnExit?.Invoke(rb_previsous, new EventArgs());
+                }
+
+                //set couleur surligné du bouton visé
+                if (rbm != null)
+                {
+                    rbm._SetHighlightColor();
+                    _OnEnter?.Invoke(rbm, new EventArgs());
+                }
+
+                rb_previsous = rbm;
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (select)
             {
-                if (rb != null)
-                    rb._SetSelectedColor();
+                if (rbm != null)
+                {
+                    //set couleur enfoncé du bouton visé
+                    rbm._SetSelectedColor();
+                    _OnSelected?.Invoke(rbm, new EventArgs());
+                }
             }
         }
         else

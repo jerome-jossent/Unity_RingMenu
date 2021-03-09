@@ -14,20 +14,29 @@ public class RingMenu
         float rayon = 0;
         for (int i = 0; i < nbrboutons.Count; i++)
         {
-            rayon += epaisseur[i];
-            GameObject a = Ring.DrawRing(i,
-                rayon,
-                epaisseur[i],
-                nbrboutons[i],
-                marge,
-                couleurs[i],
-                (textures != null) ? (textures.Count > i) ? textures[i] : null : null
-                );
-            a.transform.parent = rm.transform;
+            GameObject ring = null;
+            try
+            {
+                rayon += epaisseur[i];
+                ring = Ring.DrawRing(i,
+                    rayon,
+                    epaisseur[i],
+                    nbrboutons[i],
+                    marge,
+                    couleurs[i],
+                    (textures != null) ? (textures.Count > i) ? textures[i] : null : null
+                    );
+                ring.transform.parent = rm.transform;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(ex.Message + "\n" + ex.StackTrace);
+            }                
         }
 
         RingMenu_Manager rmm = rm.AddComponent<RingMenu_Manager>();
         rmm._ListAllButtons();
+
         return rm;
     }
 }

@@ -4,47 +4,53 @@ using UnityEngine;
 
 public class RingButton
 {
-    public static GameObject DrawButton(float r_ext, 
-        float r_int, 
-        float angle_ouverture_deg, 
-        float angle_position_deg, 
+    public static GameObject DrawButton(float r_ext,
+        float r_int,
+        float angle_ouverture_deg,
+        float angle_position_deg,
         float marge)
     {
-        return CreateSector3D(r_int, 
-            r_ext, 
-            angle_position_deg, 
-            angle_position_deg + angle_ouverture_deg, 
-            marge, 
+        return CreateSector3D(r_int,
+            r_ext,
+            angle_position_deg,
+            angle_position_deg + angle_ouverture_deg,
+            marge,
             name: "A0");
     }
 
-    public static GameObject CreateSector3D(float rayon_int, 
-        float rayon_ext, 
-        float angle_debut_deg, 
-        float angle_fin_deg, 
-        float marge, 
-        int? nbrsegments = null, 
+    public static GameObject CreateSector3D(float rayon_int,
+        float rayon_ext,
+        float angle_debut_deg,
+        float angle_fin_deg,
+        float marge,
+        int? nbrsegments = null,
         string name = "Sector3D")
     {
         //j'ai estimé qu'une "courbure" ne se voyait plus en dessous de 5°
         if (nbrsegments == null)
             nbrsegments = Mathf.CeilToInt((angle_fin_deg - angle_debut_deg) / 5);
 
-        var obj = new GameObject("Sector3D");
         if (rayon_ext > rayon_int)
         {
-            var mesh = CreateMesh(rayon_int, rayon_ext, angle_debut_deg, angle_fin_deg, marge, (int)nbrsegments);
-            var filter = obj.AddComponent<MeshFilter>();
-            var renderer = obj.AddComponent<MeshRenderer>();
-            var collider = obj.AddComponent<MeshCollider>();
+            Mesh mesh = CreateMesh(rayon_int, rayon_ext, angle_debut_deg, angle_fin_deg, marge, (int)nbrsegments);
+            GameObject obj = new GameObject("Sector3D");
+            try
+            {
+                obj.AddComponent<MeshCollider>().sharedMesh = mesh;
+                obj.AddComponent<MeshFilter>().sharedMesh = mesh;
+                Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+                obj.AddComponent<MeshRenderer>().sharedMaterial = mat;
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
 
-            filter.sharedMesh = mesh;
-            collider.sharedMesh = mesh;
-            Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
-            renderer.sharedMaterial = mat;
+            obj.name = name;
+            return obj;
         }
-        obj.name = name;
-        return obj;
+        else
+            return null;
     }
 
     static Mesh CreateMesh(float rayon_int, float rayon_ext,
@@ -90,6 +96,7 @@ public class RingButton
         #region premiers points en partant du milieu (sur l'axe Y)
         Vector2 A = new Vector2(0, Ri);
         Vector2 B = new Vector2(0, Re);
+
         vertices.Add(A);
         vertices.Add(B);
         uv.Add(Vector3.forward);
@@ -105,6 +112,10 @@ public class RingButton
             Math_JJ.Droite d = new Math_JJ.Droite() { a = a1, b = Opy };
             A = Math_JJ._Intersection2D_DroiteCoupantUnCercle(ci, d, a_01);
             B = Math_JJ._Intersection2D_DroiteCoupantUnCercle(ce, d, a_01);
+
+            if (float.IsNaN(A.x) || float.IsNaN(A.y) || float.IsNaN(B.x) || float.IsNaN(B.y))
+                return null;
+
             vertices.Add(A);
             vertices.Add(B);
             uv.Add(Vector3.forward);
@@ -134,6 +145,10 @@ public class RingButton
             Math_JJ.Droite d = new Math_JJ.Droite() { a = a1, b = Opy };
             A = Math_JJ._Intersection2D_DroiteCoupantUnCercle(ci, d, a_01);
             B = Math_JJ._Intersection2D_DroiteCoupantUnCercle(ce, d, a_01);
+
+            if (float.IsNaN(A.x) || float.IsNaN(A.y) || float.IsNaN(B.x) || float.IsNaN(B.y))
+                return null;
+
             vertices.Add(new Vector3(-A.x, A.y));
             vertices.Add(new Vector3(-B.x, B.y));
             uv.Add(Vector3.forward);
@@ -164,7 +179,6 @@ public class RingButton
 
     public static GameObject DrawIcon(GameObject secteur, Texture icone)
     {
-        // A sphere that fully encloses the bounding box.
         //https://docs.unity3d.com/ScriptReference/Renderer-bounds.html
         Renderer rend = secteur.GetComponent<Renderer>();
         if (rend == null) return null;

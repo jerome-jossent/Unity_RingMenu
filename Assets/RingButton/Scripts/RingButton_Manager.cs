@@ -8,11 +8,9 @@ public class RingButton_Manager : MonoBehaviour
     internal string _name;
     internal int _ring_index;
     internal int _index;
-
     public Color _couleurfonce;
     public Color _couleurhighlight;
     public Color _couleur;
-
     GameObject btn;
     internal GameObject _icone;
 

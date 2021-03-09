@@ -57,7 +57,10 @@ public class Math_JJ
             float _c = Ox * Ox + (b - Oy) * (b - Oy) - r * r;
             Vector2? X12 = _TrinomeDu2ndDegres(_a, _b, _c);
             if (X12 == null)
+            {
+                Debug.Log($"Aucun point de la droite y = {d.a} * x + {d.b} ne coupe le cercle de rayon {c.r} et de centre {c.O}");
                 return null;
+            }
 
             Vector2 x12 = (Vector2)X12;
             //trouve les Y avec l'équation de la droite

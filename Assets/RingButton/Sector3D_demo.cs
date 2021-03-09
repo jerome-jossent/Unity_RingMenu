@@ -33,60 +33,71 @@ public class Sector3D_demo : MonoBehaviour
     [SerializeField] UnityEngine.UI.InputField _if_obj2;
     [SerializeField] UnityEngine.UI.InputField _if_mtl2;
     [SerializeField] UnityEngine.UI.InputField _if_fbx2;
-    
-    
+
+
     [SerializeField] ToHTML tohtml;
 
     [SerializeField] GameObject Spawn;
 
     GameObject ringMenu;
-    //RingButton_Manager rb_previsous = null;
+    RingMenu_Manager ringMenu_Manager;
+
     Color[] colors;
-    int btn_index_onthisRing;
-    //Dictionary<string, RingButton_Manager> dico;
     UnityEngine.Object[] textures;
 
     void Start()
     {
-        colors = DistributeColors(20, 0.8f);
-        //for (int i = 0; i < 20; i++)
-        //    colors[i] = new Color(0.9f, 0.9f, 0.9f, 0.8f);
+        colors = SetColors(20, false, true, 0.8f);
 
         textures = Resources.LoadAll("Emoticons", typeof(Texture2D));
 
         _SliderValueChange();
     }
 
-    Color[] DistributeColors(int nbrcolor, float alpha = 1f)
+    Color[] SetColors(int nbrcolor, bool random, bool distribute, float alpha = 1f)
     {
         Color[] colors = new Color[nbrcolor];
         for (int i = 0; i < colors.Length; i++)
         {
-            //colors[i] = UnityEngine.Random.ColorHSV(0f, 1f * i / nbrcolor, 1f, 1f, 0.5f, 1f, 0.8f, 0.8f);
-            colors[i] = Color.HSVToRGB(1f * i / nbrcolor, 1f, 1f);
-            colors[i].a = alpha;
-        }
-        //return colors;
-
-        //distribuer les couleurs : échanger 1 couleur sur 2
-        for (int i = 0; i < colors.Length / 2; i++)
-        {
-            if (i % 2 == 0)
+            if (random)
+                colors[i] = UnityEngine.Random.ColorHSV(0f, 1f * i / nbrcolor, 1f, 1f, 0.5f, 1f, 0.8f, 0.8f);
+            else
             {
-                Color temp = colors[i];
-                int newIndex = colors.Length / 2 + i;
-                if (newIndex > colors.Length - 1)
-                    newIndex -= colors.Length;
-                colors[i] = colors[newIndex];
-                colors[newIndex] = temp;
+                colors[i] = Color.HSVToRGB(1f * i / nbrcolor, 1f, 1f);
+                colors[i].a = alpha;
             }
         }
+
+        //distribuer les couleurs : échanger 1 couleur sur 2
+        if (distribute)
+        {
+            for (int i = 0; i < colors.Length / 2; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Color temp = colors[i];
+                    int newIndex = colors.Length / 2 + i;
+                    if (newIndex > colors.Length - 1)
+                        newIndex -= colors.Length;
+                    colors[i] = colors[newIndex];
+                    colors[newIndex] = temp;
+                }
+            }
+        }
+
         return colors;
     }
 
     public void _SliderValueChange()
     {
-        Destroy(ringMenu);
+        if (ringMenu_Manager != null)
+        {
+            ringMenu_Manager._OnSelected -= RingMenu_Manager__OnSelected;
+            ringMenu_Manager._OnEnter -= RingMenu_Manager__OnEnter;
+            ringMenu_Manager._OnExit -= RingMenu_Manager__OnExit;
+        }
+
+        DestroyImmediate(ringMenu);
 
         int R0_B = (int)_sld_anneau0_btn.value;
         int R1_B = (int)_sld_anneau1_btn.value;
@@ -97,7 +108,7 @@ public class Sector3D_demo : MonoBehaviour
         int nbrButtons = R0_B + R1_B + R2_B + R3_B + R4_B;
         _txt_btns.text = nbrButtons + " boutons";
 
-        colors = DistributeColors(nbrButtons);
+        colors = SetColors(nbrButtons);
 
         float R0_R = _sld_anneau0_taille.value;
         float R1_R = _sld_anneau1_taille.value;
@@ -112,6 +123,12 @@ public class Sector3D_demo : MonoBehaviour
             List<float> epaisseurs = new List<float> { R0_R, R1_R, R2_R, R3_R, R4_R };
             List<Color[]> couleurs = new List<Color[]> { colors, colors, colors, colors, colors };
             ringMenu = RingMenu._DrawRingMenu(btns, epaisseurs, marge, couleurs, null);
+            ringMenu_Manager = ringMenu.GetComponent<RingMenu_Manager>();
+
+            ringMenu_Manager._OnSelected += RingMenu_Manager__OnSelected;
+            ringMenu_Manager._OnEnter += RingMenu_Manager__OnEnter;
+            ringMenu_Manager._OnExit += RingMenu_Manager__OnExit;
+
             _txt_debug.text = "";
         }
         catch (Exception ex)
@@ -127,6 +144,34 @@ public class Sector3D_demo : MonoBehaviour
         ringMenu.transform.rotation = Spawn.transform.rotation;
         ringMenu.transform.localScale = Spawn.transform.localScale;
     }
+    void Update()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
+        ringMenu_Manager._InteractionManager(ray, Input.GetMouseButtonDown(0));
+    }
+
+    private void RingMenu_Manager__OnExit(object sender, EventArgs e)
+    {
+        _txt_btn.text = "";
+    }
+
+    private void RingMenu_Manager__OnEnter(object sender, EventArgs e)
+    {
+        RingButton_Manager rbm = (RingButton_Manager)sender;
+        _txt_btn.text = rbm._name;
+        _txt_btn.fontStyle = FontStyle.Normal;
+        _txt_btn.color = Color.black;
+    }
+
+    private void RingMenu_Manager__OnSelected(object sender, EventArgs e)
+    {
+        RingButton_Manager rbm = (RingButton_Manager)sender;
+        _txt_btn.text = rbm._name;
+        _txt_btn.fontStyle = FontStyle.Bold;
+        _txt_btn.color = Color.red;
+    }
+
 
     public void _ExportToOBJMTL()
     {
