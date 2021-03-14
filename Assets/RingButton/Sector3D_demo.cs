@@ -108,7 +108,7 @@ public class Sector3D_demo : MonoBehaviour
         int nbrButtons = R0_B + R1_B + R2_B + R3_B + R4_B;
         _txt_btns.text = nbrButtons + " boutons";
 
-        colors = SetColors(nbrButtons);
+        colors = SetColors(nbrButtons, false, false, 0.8f);
 
         float R0_R = _sld_anneau0_taille.value;
         float R1_R = _sld_anneau1_taille.value;
