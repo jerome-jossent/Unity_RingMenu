@@ -23,14 +23,16 @@ public class RingButton_Manager : MonoBehaviour
     public void _SetColors(Color absolutecolor)
     {
         _couleurhighlight = absolutecolor;
-        float fctr = 0.8f;
-        Color.RGBToHSV(_couleurhighlight, out float h, out float s, out float v);
+        _couleur = ColorIntensity(absolutecolor, 0.8f);
+        _couleurfonce = ColorIntensity(absolutecolor, 0.64f);
+    }
 
-        _couleur = Color.HSVToRGB(h, s, v * fctr); 
-        _couleur.a = absolutecolor.a;
-
-        _couleurfonce = Color.HSVToRGB(h, s, v * fctr * fctr);
-        _couleurfonce.a = absolutecolor.a;
+    static public Color ColorIntensity(Color origine, float factor)
+    {
+        Color.RGBToHSV(origine, out float h, out float s, out float v);
+        Color color = Color.HSVToRGB(h, s, v * factor);
+        color.a = origine.a;
+        return color;
     }
 
     internal void _SetNormalColor()

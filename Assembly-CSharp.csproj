@@ -79,6 +79,7 @@
     <Compile Include="Assets\Resources\scripts\Triangle3D.cs" />
     <Compile Include="Assets\Resources\scripts\Triangle3DPrimitive.cs" />
     <Compile Include="Assets\Resources\scripts\TrianglePrimitive.cs" />
+    <Compile Include="Assets\RingButton\Scripts\Boutons.cs" />
     <Compile Include="Assets\RingButton\Scripts\Math_JJ.cs" />
     <Compile Include="Assets\RingButton\Scripts\Ring.cs" />
     <Compile Include="Assets\RingButton\Scripts\RingButton.cs" />

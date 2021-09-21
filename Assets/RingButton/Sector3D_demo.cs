@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Sector3D_demo : MonoBehaviour
@@ -117,12 +118,33 @@ public class Sector3D_demo : MonoBehaviour
         float R4_R = _sld_anneau4_taille.value;
         float marge = _sld_marge.value;
 
+        Font arial = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         try
         {
             List<int> btns = new List<int> { R0_B, R1_B, R2_B, R3_B, R4_B };
             List<float> epaisseurs = new List<float> { R0_R, R1_R, R2_R, R3_R, R4_R };
             List<Color[]> couleurs = new List<Color[]> { colors, colors, colors, colors, colors };
-            ringMenu = RingMenu._DrawRingMenu(btns, epaisseurs, marge, couleurs, null);
+
+            List<Dictionary<int, Bouton>> boutons = new List<Dictionary<int, Bouton>>();
+            foreach (int ring_count in btns)
+            {
+                boutons.Add(new Dictionary<int, Bouton>());
+                for (int i = 0; i < ring_count; i++)
+                {
+                    Bouton bouton = new Bouton();
+                    bouton.index = i;
+                    bouton.label = RandomString(15);// + "\n" + RandomString(15);
+                    bouton.label_color = RingButton_Manager.ColorIntensity(colors[i], 0.2f);
+                    bouton.label_font = arial;
+                    bouton.label_fontStyle = FontStyle.Bold;
+                    bouton.label_fontSize = 30;
+                    bouton.label_resizeTextForBestFit = true;
+                    boutons[boutons.Count - 1].Add(i, bouton);
+                }
+            }
+
+            //ringMenu = RingMenu._DrawRingMenu(btns, epaisseurs, marge, couleurs, null);
+            ringMenu = RingMenu._DrawRingMenu(boutons, epaisseurs, marge, couleurs, null);
             ringMenu_Manager = ringMenu.GetComponent<RingMenu_Manager>();
 
             ringMenu_Manager._OnSelected += RingMenu_Manager__OnSelected;
@@ -140,10 +162,10 @@ public class Sector3D_demo : MonoBehaviour
 #endif
         }
 
-        ringMenu.transform.position = Spawn.transform.position;
-        ringMenu.transform.rotation = Spawn.transform.rotation;
+        ringMenu.transform.SetPositionAndRotation(Spawn.transform.position, Spawn.transform.rotation);
         ringMenu.transform.localScale = Spawn.transform.localScale;
     }
+
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -172,7 +194,6 @@ public class Sector3D_demo : MonoBehaviour
         _txt_btn.color = Color.red;
     }
 
-
     public void _ExportToOBJMTL()
     {
         //OBJ & MTL
@@ -187,5 +208,14 @@ public class Sector3D_demo : MonoBehaviour
         string path = ringMenu.name + ".fbx";
         string fbxfile = UnityFBXExporter.FBXExporter.MeshToString(ringMenu, path, false, false);
         tohtml._String_TO_File(path, fbxfile);
+    }
+
+
+    private static System.Random random = new System.Random();
+    public static string RandomString(int length)
+    {
+        const string chars = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+          .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }

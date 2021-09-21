@@ -5,10 +5,10 @@ using UnityEngine;
 public class RingButton
 {
     public static GameObject DrawButton(float r_ext,
-        float r_int,
-        float angle_ouverture_deg,
-        float angle_position_deg,
-        float marge)
+                                        float r_int,
+                                        float angle_ouverture_deg,
+                                        float angle_position_deg,
+                                        float marge)
     {
         return CreateSector3D(r_int,
                               r_ext,
@@ -20,19 +20,24 @@ public class RingButton
 
     public static GameObject CreateSector3D(float rayon_int,
                                             float rayon_ext,
-                                            float angle_debut_deg,
-                                            float angle_fin_deg,
+                                            float angle_deg_debut,
+                                            float angle_deg_fin,
                                             float marge,
                                             int? nbrsegments = null,
                                             string name = "Sector3D")
     {
         //j'ai estimé qu'une "courbure" ne se voyait plus en dessous de 5°
         if (nbrsegments == null)
-            nbrsegments = Mathf.CeilToInt((angle_fin_deg - angle_debut_deg) / 5);
+            nbrsegments = Mathf.CeilToInt((angle_deg_fin - angle_deg_debut) / 5);
 
         if (rayon_ext > rayon_int)
         {
-            Mesh mesh = CreateMesh(rayon_int, rayon_ext, angle_debut_deg, angle_fin_deg, marge, (int)nbrsegments);
+            Mesh mesh;
+            //cas où il n'y a qu'1 => pas de marge
+            if (angle_deg_debut == angle_deg_fin - 360)
+                mesh = CreateMesh(rayon_int, rayon_ext, angle_deg_debut, angle_deg_fin, 0, (int)nbrsegments);
+            else
+                mesh = CreateMesh(rayon_int, rayon_ext, angle_deg_debut, angle_deg_fin, marge, (int)nbrsegments);
             GameObject obj = new GameObject("Sector3D");
             try
             {
@@ -53,11 +58,11 @@ public class RingButton
             return null;
     }
 
-    static Mesh CreateMesh(float rayon_int, 
+    static Mesh CreateMesh(float rayon_int,
                            float rayon_ext,
-                           float angle_debut_deg, 
+                           float angle_debut_deg,
                            float angle_fin_deg,
-                           float marge, 
+                           float marge,
                            int nbrsegments)
     {
         #region infos
@@ -71,9 +76,6 @@ public class RingButton
         #region variables
         nbrsegments /= 2;
         if (nbrsegments < 1) nbrsegments = 1;
-        //float E = 0.1f; //Epaisseur
-        //float M = marge / nbrsegments;
-        //float Ri = rayon_int + M/2;
         float M = marge;
         float Ri = rayon_int + M;
         float Re = rayon_ext;
