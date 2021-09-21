@@ -5,12 +5,12 @@ using UnityEngine;
 public class Ring
 {
     public static GameObject DrawRing(int ring_index,
-                              float r_ext,
-                              float epaisseur,
-                              int nbrboutons,
-                              float marge,
-                              Color[] couleurs,
-                              Texture[] textures)
+                                      float r_ext,
+                                      float epaisseur,
+                                      int nbrboutons,
+                                      float marge,
+                                      Color[] couleurs,
+                                      Texture[] textures)
     {
         GameObject go = new GameObject();
         go.name = "ring_" + ring_index;
@@ -27,10 +27,10 @@ public class Ring
             try
             {
                 btn = RingButton.DrawButton(r_ext,
-                                                r_int,
-                                                angle_ouverture_deg,
-                                                angle_position_deg,
-                                                marge);
+                                            r_int,
+                                            angle_ouverture_deg,
+                                            angle_position_deg,
+                                            marge);
                 if (btn == null) continue;
 
                 btn.name = go.name + "_btn_" + i;

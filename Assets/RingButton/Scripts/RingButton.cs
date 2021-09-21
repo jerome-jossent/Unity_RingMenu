@@ -11,20 +11,20 @@ public class RingButton
         float marge)
     {
         return CreateSector3D(r_int,
-            r_ext,
-            angle_position_deg,
-            angle_position_deg + angle_ouverture_deg,
-            marge,
-            name: "A0");
+                              r_ext,
+                              angle_position_deg,
+                              angle_position_deg + angle_ouverture_deg,
+                              marge,
+                              name: "A0");
     }
 
     public static GameObject CreateSector3D(float rayon_int,
-        float rayon_ext,
-        float angle_debut_deg,
-        float angle_fin_deg,
-        float marge,
-        int? nbrsegments = null,
-        string name = "Sector3D")
+                                            float rayon_ext,
+                                            float angle_debut_deg,
+                                            float angle_fin_deg,
+                                            float marge,
+                                            int? nbrsegments = null,
+                                            string name = "Sector3D")
     {
         //j'ai estimé qu'une "courbure" ne se voyait plus en dessous de 5°
         if (nbrsegments == null)
@@ -53,9 +53,12 @@ public class RingButton
             return null;
     }
 
-    static Mesh CreateMesh(float rayon_int, float rayon_ext,
-                           float angle_debut_deg, float angle_fin_deg,
-                           float marge, int nbrsegments)
+    static Mesh CreateMesh(float rayon_int, 
+                           float rayon_ext,
+                           float angle_debut_deg, 
+                           float angle_fin_deg,
+                           float marge, 
+                           int nbrsegments)
     {
         #region infos
         //c'est la gestion de la marge qui rend les choses complexes
@@ -90,7 +93,8 @@ public class RingButton
         Math_JJ.Cercle ci = new Math_JJ.Cercle() { O = O, r = Ri };
 
         // origine prime (à cause de la marge) sur l'axe Y (donc O'x=0)
-        float Opy = M / Mathf.Sin((90 - alpha) / 180 * Mathf.PI);
+        float angle_Opy = 90 - alpha;
+        float Opy = (angle_Opy == 0) ? 0 : M / Mathf.Sin(angle_Opy / 180 * Mathf.PI);
         #endregion
 
         #region premiers points en partant du milieu (sur l'axe Y)
@@ -120,8 +124,8 @@ public class RingButton
             vertices.Add(B);
             uv.Add(Vector3.forward);
             uv.Add(Vector3.forward);
-            triangles.AddRange(new int[] { it,   it+1, it+2, //a, b, c
-                                           it+1, it+3, it+2  //b, d, c
+            triangles.AddRange(new int[] { it    , it + 1, it + 2, // a, b, c
+                                           it + 1, it + 3, it + 2  // b, d, c
                                          });
             it += 2;
         }
