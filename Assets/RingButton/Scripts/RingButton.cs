@@ -198,9 +198,9 @@ public class RingButton
         mat.mainTexture = icone;
         quad.GetComponent<Renderer>().material = mat;
 
-        quad.transform.Rotate(90, 0, 0);
+        //quad.transform.Rotate(90, 0, 0);
         quad.transform.localScale = new Vector3(radius, radius);
-        quad.transform.position = center + Vector3.up;
+        //quad.transform.Translate(0, 0, -10);
 
         return quad;
     }

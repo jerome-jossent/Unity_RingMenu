@@ -133,18 +133,22 @@ public class Sector3D_demo : MonoBehaviour
                 {
                     Bouton bouton = new Bouton();
                     bouton.index = i;
-                    bouton.label = RandomString(15);// + "\n" + RandomString(15);
+                    bouton.name = i.ToString();
+                    bouton.label = "";// RandomString(15);// + "\n" + RandomString(15);
                     bouton.label_color = RingButton_Manager.ColorIntensity(colors[i], 0.2f);
                     bouton.label_font = arial;
                     bouton.label_fontStyle = FontStyle.Bold;
                     bouton.label_fontSize = 30;
                     bouton.label_resizeTextForBestFit = true;
+
+                    bouton.icone =(Texture2D)textures[i];
+
                     boutons[boutons.Count - 1].Add(i, bouton);
                 }
             }
 
             //ringMenu = RingMenu._DrawRingMenu(btns, epaisseurs, marge, couleurs, null);
-            ringMenu = RingMenu._DrawRingMenu(boutons, epaisseurs, marge, couleurs, null);
+            ringMenu = RingMenu._DrawRingMenu(boutons, epaisseurs, marge, couleurs);
             ringMenu_Manager = ringMenu.GetComponent<RingMenu_Manager>();
 
             ringMenu_Manager._OnSelected += RingMenu_Manager__OnSelected;

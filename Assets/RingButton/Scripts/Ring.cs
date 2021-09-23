@@ -9,8 +9,10 @@ public class Ring
                                       float epaisseur,
                                       int nbrboutons,
                                       float marge,
-                                      Color[] couleurs,
-                                      Texture[] textures)
+                                      Color[] couleurs
+        ,
+                                      Texture[] textures
+        )
     {
         GameObject go = new GameObject();
         go.name = "ring_" + ring_index;
@@ -73,8 +75,10 @@ public class Ring
                                       float epaisseur,
                                       Dictionary<int, Bouton> boutons,
                                       float marge,
-                                      Color[] couleurs,
-                                      Texture[] textures)
+                                      Color[] couleurs
+        //,
+        //                              Texture[] textures
+        )
     {
         GameObject go = new GameObject();
         go.name = "ring_" + ring_index;
@@ -99,7 +103,7 @@ public class Ring
                                             marge);
                 if (btn == null) continue;
 
-                btn.name = go.name + "_btn_" + bouton.label;
+                btn.name = go.name + "_btn_" + bouton.name;
                 btn.transform.parent = go.transform;
 
                 RingButton_Manager rb = btn.AddComponent<RingButton_Manager>();
@@ -109,14 +113,32 @@ public class Ring
                 rb._SetColors(couleurs[bouton.index]);
 
                 //icône
-                if (textures != null)
+                if (bouton.icone != null)
                 {
                     try
                     {
-                        Texture texture = textures[bouton.index];
+                        Texture texture = bouton.icone;
                         GameObject icn = RingButton.DrawIcon(btn, texture);
                         if (icn != null)
-                            icn.transform.SetParent(go.transform);
+                        {
+                            icn.transform.parent = rb.gameObject.transform;
+                            float hauteur = (r_ext - r_int - marge) / Mathf.Pow(2,0.5f);
+
+                            float amplitude = r_int + hauteur / 2 + marge;
+                            float x = amplitude * Mathf.Cos((90 + angle_position_deg + angle_ouverture_deg / 2) / 180 * Mathf.PI);
+                            float y = amplitude * Mathf.Sin((90 + angle_position_deg + angle_ouverture_deg / 2) / 180 * Mathf.PI);
+
+                            if (angle_ouverture_deg == 360)
+                            {
+                                x = 0;
+                                y = 0;
+                                hauteur = r_ext;
+                            }
+                            icn.transform.localScale = new Vector2(hauteur, hauteur);
+                            icn.transform.Translate(x, y, -35);
+
+                            //icn.transform.Rotate(0, 0, angle_position_deg + angle_ouverture_deg / 2);
+                        }
                         rb._icone = icn;
                     }
                     catch (System.Exception ex)

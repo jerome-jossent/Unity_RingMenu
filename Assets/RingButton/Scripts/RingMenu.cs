@@ -43,8 +43,7 @@ public class RingMenu
     public static GameObject _DrawRingMenu(List<Dictionary<int, Bouton>> boutons,
                                     List<float> epaisseur,
                                     float marge,
-                                    List<Color[]> couleurs,
-                                    List<Texture[]> textures)
+                                    List<Color[]> couleurs)
     {
         GameObject rm = new GameObject();
         float rayon = 0;
@@ -59,8 +58,9 @@ public class RingMenu
                     epaisseur[i],
                     boutons[i],
                     marge,
-                    couleurs[i],
-                    (textures != null) ? (textures.Count > i) ? textures[i] : null : null
+                    couleurs[i]
+                    //,
+                    //(textures != null) ? (textures.Count > i) ? textures[i] : null : null
                     );
                 ring.transform.parent = rm.transform;
             }

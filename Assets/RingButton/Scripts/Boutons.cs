@@ -11,4 +11,7 @@ public class Bouton
     public bool label_resizeTextForBestFit = false;
     public int label_fontSize;
     public UnityEngine.Color label_color;
+
+    public UnityEngine.Texture2D icone;
+    internal string name;
 }
