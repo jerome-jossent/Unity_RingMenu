@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RingMenuJJ;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,10 +126,14 @@ public class Sector3D_demo : MonoBehaviour
             List<float> epaisseurs = new List<float> { R0_R, R1_R, R2_R, R3_R, R4_R };
             List<Color[]> couleurs = new List<Color[]> { colors, colors, colors, colors, colors };
 
+            //Dictionary<int, Dictionary<int, Bouton>> boutons = new Dictionary<int, Dictionary<int, Bouton>>();
             List<Dictionary<int, Bouton>> boutons = new List<Dictionary<int, Bouton>>();
+
+            //int k = 0;
             foreach (int ring_count in btns)
             {
                 boutons.Add(new Dictionary<int, Bouton>());
+                //boutons.Add(k, new Dictionary<int, Bouton>());
                 for (int i = 0; i < ring_count; i++)
                 {
                     Bouton bouton = new Bouton();
@@ -142,9 +147,12 @@ public class Sector3D_demo : MonoBehaviour
                     bouton.label_resizeTextForBestFit = true;
 
                     bouton.icone =(Texture2D)textures[i];
-
+ 
                     boutons[boutons.Count - 1].Add(i, bouton);
+                    //boutons[k].Add(i, bouton);
+
                 }
+                //k++;
             }
 
             //ringMenu = RingMenu._DrawRingMenu(btns, epaisseurs, marge, couleurs, null);
@@ -185,7 +193,7 @@ public class Sector3D_demo : MonoBehaviour
     private void RingMenu_Manager__OnEnter(object sender, EventArgs e)
     {
         RingButton_Manager rbm = (RingButton_Manager)sender;
-        _txt_btn.text = rbm._name;
+        _txt_btn.text = rbm.gameObject.name;
         _txt_btn.fontStyle = FontStyle.Normal;
         _txt_btn.color = Color.black;
     }
@@ -193,7 +201,7 @@ public class Sector3D_demo : MonoBehaviour
     private void RingMenu_Manager__OnSelected(object sender, EventArgs e)
     {
         RingButton_Manager rbm = (RingButton_Manager)sender;
-        _txt_btn.text = rbm._name;
+        _txt_btn.text = rbm.gameObject.name;
         _txt_btn.fontStyle = FontStyle.Bold;
         _txt_btn.color = Color.red;
     }

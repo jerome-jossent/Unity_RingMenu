@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RingMenuJJ;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -138,7 +139,9 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
             colors[i] = Color.HSVToRGB(1f * i / nbrcolor, 1f, 1f);
             colors[i].a = alpha;
         }
-        return colors;
+
+        if(false) //<=commentable !!!
+            return colors;
 
         //distribuer les couleurs : échanger 1 couleur sur 2
         for (int i = 0; i < colors.Length / 2; i++)
@@ -265,7 +268,7 @@ public class Sector3D_demo_fromList1 : MonoBehaviour
 
             //script de gestion du bouton (index, nom, couleurs, ...) 
             RingButton_Manager rb = btn.AddComponent<RingButton_Manager>();
-            rb._name = btn.name;
+            //rb._name = btn.name;
             rb._ring_index = ring_index;
             rb._index = i;
             rb._SetColors(colors[index]);

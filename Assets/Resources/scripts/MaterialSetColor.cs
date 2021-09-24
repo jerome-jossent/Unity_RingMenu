@@ -15,7 +15,7 @@ public class MaterialSetColor
         mat.color = color;
         Renderer rnd = go.GetComponent<Renderer>();
         if (rnd != null)
-            rnd.material = mat;
+            rnd.material = mat;        
     }
 
     public enum BlendMode

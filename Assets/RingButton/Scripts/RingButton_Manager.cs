@@ -2,51 +2,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RingButton_Manager : MonoBehaviour
+namespace RingMenuJJ
 {
-    internal string _name;
-    internal int _ring_index;
-    internal int _index;
-    public Color _couleurfonce;
-    public Color _couleurhighlight;
-    public Color _couleur;
-    GameObject btn;
-    internal GameObject _icone;
-
-    private void Start()
+    public class RingButton_Manager : MonoBehaviour
     {
-        btn = gameObject;
-        _SetNormalColor();
-    }
+        //internal string _name;
+        internal int _ring_index;
+        internal int _index;
+        public Color _couleurfonce;
+        public Color _couleurhighlight;
+        public Color _couleur;
+        GameObject btn;
+        internal GameObject _icone;
 
-    public void _SetColors(Color absolutecolor)
-    {
-        _couleurhighlight = absolutecolor;
-        _couleur = ColorIntensity(absolutecolor, 0.8f);
-        _couleurfonce = ColorIntensity(absolutecolor, 0.64f);
-    }
+        private void Start()
+        {
+            btn = gameObject;
+            _SetNormalColor();
+        }
 
-    static public Color ColorIntensity(Color origine, float factor)
-    {
-        Color.RGBToHSV(origine, out float h, out float s, out float v);
-        Color color = Color.HSVToRGB(h, s, v * factor);
-        color.a = origine.a;
-        return color;
-    }
+        public void _SetColors(Color absolutecolor)
+        {
+            _couleurhighlight = absolutecolor;
+            _couleur = ColorIntensity(absolutecolor, 0.8f);
+            _couleurfonce = ColorIntensity(absolutecolor, 0.64f);
+        }
 
-    internal void _SetNormalColor()
-    {
-        MaterialSetColor.Colorier(btn, _couleur);
-    }
+        static public Color ColorIntensity(Color origine, float factor)
+        {
+            Color.RGBToHSV(origine, out float h, out float s, out float v);
+            Color color = Color.HSVToRGB(h, s, v * factor);
+            color.a = origine.a;
+            return color;
+        }
 
-    internal void _SetHighlightColor()
-    {
-        MaterialSetColor.Colorier(btn, _couleurhighlight);
-    }
+        internal void _SetNormalColor()
+        {
+            MaterialSetColor.Colorier(btn, _couleur);
+        }
 
-    internal void _SetSelectedColor()
-    {
-        MaterialSetColor.Colorier(btn, _couleurfonce);
+        internal void _SetNormalColor(GameObject gameObject)
+        {
+            MaterialSetColor.Colorier(gameObject, _couleur);
+            Debug.Log("bob");
+        }
+
+        internal void _SetHighlightColor()
+        {
+            MaterialSetColor.Colorier(btn, _couleurhighlight);
+        }
+
+        internal void _SetSelectedColor()
+        {
+            MaterialSetColor.Colorier(btn, _couleurfonce);
+        }
+
     }
 }
