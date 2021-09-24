@@ -17,6 +17,7 @@ public class RingMenu_EditorMode : MonoBehaviour
     [Range(0, 100)] public float R2_R = 50;
     [Range(0, 100)] public float R3_R = 50;
     [Range(0, 100)] public float R4_R = 50;
+
     [Space]
     [Header("Boutons")]
     public RingButton_EditorMode[] Boutons_Ring0;
@@ -24,6 +25,7 @@ public class RingMenu_EditorMode : MonoBehaviour
     public RingButton_EditorMode[] Boutons_Ring2;
     public RingButton_EditorMode[] Boutons_Ring3;
     public RingButton_EditorMode[] Boutons_Ring4;
+
     [Space]
     [Header("Couleurs")]
     public bool setDefaultColors;
@@ -31,19 +33,24 @@ public class RingMenu_EditorMode : MonoBehaviour
     public bool distributeColors;
 
     RingMenu_Manager ringMenu_Manager;
-    GameObject ringMenu;
+  public  GameObject ringMenu;
+
+    bool aValueInInspectorHasChanged;
+    void OnValidate() { aValueInInspectorHasChanged = true; }
 
     void Start()
     {
         ringMenu = gameObject.transform.Find("menu").gameObject;
-
         ringMenu_Manager = gameObject.GetComponentInChildren<RingMenu_Manager>();
     }
 
     void Update()
     {
-        if (Application.isEditor && !Application.isPlaying)
+        if (aValueInInspectorHasChanged)
+        {
             Draw();
+            aValueInInspectorHasChanged = false;
+        }
     }
 
     void Draw()
@@ -111,9 +118,9 @@ public class RingMenu_EditorMode : MonoBehaviour
 
         if (ringMenu_Manager != null)
         {
-            ringMenu_Manager._OnSelected -= RingMenu_Manager__OnSelected;
-            ringMenu_Manager._OnEnter -= RingMenu_Manager__OnEnter;
-            ringMenu_Manager._OnExit -= RingMenu_Manager__OnExit;
+            //ringMenu_Manager._OnSelected -= _RingMenu_Manager__OnSelected;
+            //ringMenu_Manager._OnEnter -= _RingMenu_Manager__OnEnter;
+            //ringMenu_Manager._OnExit -= _RingMenu_Manager__OnExit;
             DestroyImmediate(ringMenu);
         }
 
@@ -124,34 +131,31 @@ public class RingMenu_EditorMode : MonoBehaviour
         ringMenu.transform.localPosition = Vector3.zero;
         ringMenu_Manager = ringMenu.GetComponent<RingMenu_Manager>();
 
-        print(touslesboutonsaffiches.Count);
         foreach (var item in touslesboutonsaffiches.Values)
-        {
             item.ringButtonManager._SetNormalColor(item.ringButtonManager.gameObject);
-        }
 
-        ringMenu_Manager._OnSelected += RingMenu_Manager__OnSelected;
-        ringMenu_Manager._OnEnter += RingMenu_Manager__OnEnter;
-        ringMenu_Manager._OnExit += RingMenu_Manager__OnExit;
+        //ringMenu_Manager._OnSelected += _RingMenu_Manager__OnSelected;
+        //ringMenu_Manager._OnEnter += _RingMenu_Manager__OnEnter;
+        //ringMenu_Manager._OnExit += _RingMenu_Manager__OnExit;
     }
 
-    private void RingMenu_Manager__OnExit(object sender, EventArgs e)
-    {
-        RingButton_Manager rbm = (RingButton_Manager)sender;
-        //Debug.Log(rbm.gameObject.name + " [EXIT]");
-    }
+    //public void _RingMenu_Manager__OnExit(object sender, EventArgs e)
+    //{
+    //    RingButton_Manager rbm = (RingButton_Manager)sender;
+    //    Debug.Log(rbm.gameObject.name + " [EXIT]");
+    //}
 
-    private void RingMenu_Manager__OnEnter(object sender, EventArgs e)
-    {
-        RingButton_Manager rbm = (RingButton_Manager)sender;
-        //Debug.Log(rbm.gameObject.name + " [ENTER]");
-    }
+    //public void _RingMenu_Manager__OnEnter(object sender, EventArgs e)
+    //{
+    //    RingButton_Manager rbm = (RingButton_Manager)sender;
+    //    Debug.Log(rbm.gameObject.name + " [ENTER]");
+    //}
 
-    private void RingMenu_Manager__OnSelected(object sender, EventArgs e)
-    {
-        RingButton_Manager rbm = (RingButton_Manager)sender;
-        //Debug.Log(rbm.gameObject.name + " [SELECTED]");
-    }
+    //public void _RingMenu_Manager__OnSelected(object sender, EventArgs e)
+    //{
+    //    RingButton_Manager rbm = (RingButton_Manager)sender;
+    //    Debug.Log(rbm.gameObject.name + " [SELECTED]");
+    //}
 
 
 

@@ -36,6 +36,7 @@ public class Sector3D_demo : MonoBehaviour
     [SerializeField] UnityEngine.UI.InputField _if_mtl2;
     [SerializeField] UnityEngine.UI.InputField _if_fbx2;
 
+    public string hitname;
 
     [SerializeField] ToHTML tohtml;
 
@@ -182,7 +183,7 @@ public class Sector3D_demo : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
-        ringMenu_Manager._InteractionManager(ray, Input.GetMouseButtonDown(0));
+        ringMenu_Manager._InteractionManager(ray, Input.GetMouseButtonDown(0), out hitname);
     }
 
     private void RingMenu_Manager__OnExit(object sender, EventArgs e)

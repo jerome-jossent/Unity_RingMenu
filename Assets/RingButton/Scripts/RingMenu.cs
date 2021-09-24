@@ -100,7 +100,7 @@ namespace RingMenuJJ
             }
 
             RingMenu_Manager rmm = rm.AddComponent<RingMenu_Manager>();
-            rmm._ListAllButtons();
+            //rmm._ListAllButtons();
 
             return rm;
         }

@@ -257,7 +257,7 @@ namespace RingMenuJJ
                                     hauteur = r_ext;
                                 }
                                 icn.transform.localScale = new Vector2(hauteur, hauteur);
-                                icn.transform.Translate(x, y, -35);
+                                icn.transform.Translate(x, y, -0.35f);
                             }
                             rb._icone = icn;
                         }

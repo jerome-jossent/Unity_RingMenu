@@ -23,14 +23,19 @@ namespace RingMenuJJ
                 _buttons.Add(rbms[i].gameObject.name, rbms[i]);
         }
 
-        public void _InteractionManager(Ray ray, bool select)
+        public void _InteractionManager(Ray ray, bool select, out string hitname, bool debug = false)
         {
+            hitname = "";
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!_buttons.ContainsKey(hit.transform.name))
+                if (debug)
+                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
+
+                hitname = hit.transform.name;
+                if (!_buttons.ContainsKey(hitname))
                     return;
 
-                _selected_RingButton_name = hit.transform.name;
+                _selected_RingButton_name = hitname;
                 RingButton_Manager rbm = _buttons[_selected_RingButton_name];
                 _selected_RingButton_Manager = rbm;
                 if (rbm != rb_previsous)
@@ -39,14 +44,18 @@ namespace RingMenuJJ
                     if (rb_previsous != null)
                     {
                         rb_previsous._SetNormalColor();
-                        _OnExit?.Invoke(rb_previsous, new EventArgs());
+                        rbm._OnExit.Invoke();
+                        //Debug.Log(rbm.gameObject.name + " [EXIT]");
+                        //_OnExit?.Invoke(rb_previsous, new EventArgs());
                     }
 
                     //set couleur surligné du bouton visé
                     if (rbm != null)
                     {
                         rbm._SetHighlightColor();
-                        _OnEnter?.Invoke(rbm, new EventArgs());
+                        rbm._OnEnter.Invoke();             
+                        //Debug.Log(rbm.gameObject.name + " [ENTER]");
+                        //_OnEnter?.Invoke(rbm, new EventArgs());
                     }
 
                     rb_previsous = rbm;
@@ -58,7 +67,9 @@ namespace RingMenuJJ
                     {
                         //set couleur enfoncé du bouton visé
                         rbm._SetSelectedColor();
-                        _OnSelected?.Invoke(rbm, new EventArgs());
+                        rbm._OnClick.Invoke();
+                        //Debug.Log(rbm.gameObject.name + " [SELECTED]");
+                        //_OnSelected?.Invoke(rbm, new EventArgs());
                     }
                 }
             }

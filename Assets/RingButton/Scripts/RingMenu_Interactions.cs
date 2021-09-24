@@ -5,18 +5,28 @@ using UnityEngine;
 
 public class RingMenu_Interactions : MonoBehaviour
 {
-    RingMenu_Manager ringMenu_Manager;
+    public RingMenu_Manager ringMenu_Manager;
+    public bool debug;
+    public string hitname;
 
     private void Start()
     {
-        ringMenu_Manager = gameObject.GetComponentInChildren<RingMenu_Manager>();
+        GameObject menu = gameObject.transform.Find("menu").gameObject;
+        ringMenu_Manager = menu.GetComponent<RingMenu_Manager>();
         ringMenu_Manager._ListAllButtons();
     }
 
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
-        ringMenu_Manager._InteractionManager(ray, Input.GetMouseButtonDown(0));
+
+        if (ringMenu_Manager == null)
+        {
+            GameObject menu = gameObject.transform.Find("menu").gameObject;
+            ringMenu_Manager = menu.GetComponent<RingMenu_Manager>();
+            ringMenu_Manager._ListAllButtons();
+        }
+
+        ringMenu_Manager._InteractionManager(ray, Input.GetMouseButtonDown(0), out hitname, debug);
     }
 }

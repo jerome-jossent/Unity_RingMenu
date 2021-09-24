@@ -20,10 +20,6 @@ public class RingButton_EditorMode : ScriptableObject
     public float button_index_on_ring;
     public int button_index_on_ring_int;
 
-
-
-
-
     public Font label_font;
     public FontStyle label_fontStyle;
     public bool label_resizeTextForBestFit = false;
@@ -32,4 +28,9 @@ public class RingButton_EditorMode : ScriptableObject
 
     public string nom;
     internal RingButton_Manager ringButtonManager;
+
+    //public UnityEngine.UI.Button.ButtonClickedEvent _OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+    //public UnityEngine.UI.Button.ButtonClickedEvent _OnEnter = new UnityEngine.UI.Button.ButtonClickedEvent();
+    //public UnityEngine.UI.Button.ButtonClickedEvent _OnExit = new UnityEngine.UI.Button.ButtonClickedEvent();
+
 }

@@ -15,6 +15,11 @@ namespace RingMenuJJ
         GameObject btn;
         internal GameObject _icone;
 
+        // Event delegates triggered on click.
+        public UnityEngine.UI.Button.ButtonClickedEvent _OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+        public UnityEngine.UI.Button.ButtonClickedEvent _OnEnter = new UnityEngine.UI.Button.ButtonClickedEvent();
+        public UnityEngine.UI.Button.ButtonClickedEvent _OnExit = new UnityEngine.UI.Button.ButtonClickedEvent();
+
         private void Start()
         {
             btn = gameObject;
@@ -44,7 +49,6 @@ namespace RingMenuJJ
         internal void _SetNormalColor(GameObject gameObject)
         {
             MaterialSetColor.Colorier(gameObject, _couleur);
-            Debug.Log("bob");
         }
 
         internal void _SetHighlightColor()
@@ -56,6 +60,5 @@ namespace RingMenuJJ
         {
             MaterialSetColor.Colorier(btn, _couleurfonce);
         }
-
     }
 }
