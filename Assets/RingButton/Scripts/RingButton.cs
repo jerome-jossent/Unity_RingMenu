@@ -184,26 +184,24 @@ namespace RingMenuJJ
             #endregion
         }
 
-        public static GameObject DrawIcon(GameObject secteur, Texture icone)
+        public static GameObject DrawIcon(Texture icone,
+            float r_ext, float r_int, float angle)
         {
-            //https://docs.unity3d.com/ScriptReference/Renderer-bounds.html
-            Renderer rend = secteur.GetComponent<Renderer>();
-            if (rend == null) return null;
-
-            Vector3 center = rend.bounds.center;
-            float radius = rend.bounds.extents.magnitude;
-            radius *= Mathf.Pow(0.5f, 0.5f);
-
             GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
             GameObject.DestroyImmediate(quad.GetComponent<Collider>());
-
+            //rendu
             Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+            mat.renderQueue = 3500;
             mat.mainTexture = icone;
             quad.GetComponent<Renderer>().material = mat;
-
-            //quad.transform.Rotate(90, 0, 0);
+            //taille
+            float radius = (r_ext - r_int) / Mathf.Pow(2, 0.5f);
             quad.transform.localScale = new Vector3(radius, radius);
-            //quad.transform.Translate(0, 0, -10);
+            //position
+            float distance = (r_ext + r_int) / 2;
+            float x = distance * Mathf.Cos((90 + angle) / 180 * Mathf.PI);
+            float y = distance * Mathf.Sin((90 + angle) / 180 * Mathf.PI);
+            quad.transform.localPosition = new Vector3(x, y, -0.1f);
 
             return quad;
         }

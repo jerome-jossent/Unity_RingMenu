@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor;
+using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.Events;
+
 namespace RingMenuJJ
 {
     public class Ring
@@ -10,8 +15,7 @@ namespace RingMenuJJ
                                           float epaisseur,
                                           int nbrboutons,
                                           float marge,
-                                          Color[] couleurs
-            ,
+                                          Color[] couleurs,
                                           Texture[] textures
             )
         {
@@ -51,7 +55,7 @@ namespace RingMenuJJ
                         try
                         {
                             Texture texture = textures[i];
-                            GameObject icn = RingButton.DrawIcon(btn, texture);
+                            GameObject icn = RingButton.DrawIcon(texture, 0, 0, 0);
                             if (icn != null)
                                 icn.transform.parent = go.transform;
                             rb._icone = icn;
@@ -77,8 +81,6 @@ namespace RingMenuJJ
                                               Dictionary<int, Bouton> boutons,
                                               float marge,
                                               Color[] couleurs
-                //,
-                //                              Texture[] textures
                 )
         {
             GameObject go = new GameObject();
@@ -119,7 +121,7 @@ namespace RingMenuJJ
                         try
                         {
                             Texture texture = bouton.icone;
-                            GameObject icn = RingButton.DrawIcon(btn, texture);
+                            GameObject icn = RingButton.DrawIcon(texture, 0, 0, 0);
                             if (icn != null)
                             {
                                 icn.transform.parent = rb.gameObject.transform;
@@ -196,7 +198,7 @@ namespace RingMenuJJ
             GameObject go = new GameObject();
             go.name = "ring_" + anneau.index;
 
-            int nbrboutons = anneau.butons_on_ring_sorted.Count;
+            int nbrboutons = anneau.butons_on_ring.Count;
 
             float angle_ouverture_deg = (float)360 / nbrboutons;
 
@@ -205,7 +207,7 @@ namespace RingMenuJJ
 
             float angle_position_deg_init = angle_initial + angle_ouverture_deg / 2;
 
-            foreach (RingButton_EditorMode bouton in anneau.butons_on_ring_sorted.Values)
+            foreach (RingButton_EditorMode bouton in anneau.butons_on_ring.Values)
             {
                 float angle_position_deg;
                 if (sens_horaire)
@@ -235,30 +237,16 @@ namespace RingMenuJJ
                     rb._SetColors(bouton.button_color);
 
                     //icône
-                    if (bouton.icon_show && bouton.icon != null)
+                    if (bouton.icon != null)
                     {
                         try
                         {
                             Texture texture = bouton.icon;
-                            GameObject icn = RingButton.DrawIcon(btn, texture);
-                            if (icn != null)
-                            {
-                                icn.transform.parent = rb.gameObject.transform;
-                                float hauteur = (r_ext - r_int - marge) / Mathf.Pow(2, 0.5f);
+                            GameObject icn = RingButton.DrawIcon(texture,
+                                r_ext, r_int,
+                                angle_position_deg + angle_ouverture_deg / 2);
 
-                                float amplitude = r_int + hauteur / 2 + marge;
-                                float x = amplitude * Mathf.Cos((90 + angle_position_deg + angle_ouverture_deg / 2) / 180 * Mathf.PI);
-                                float y = amplitude * Mathf.Sin((90 + angle_position_deg + angle_ouverture_deg / 2) / 180 * Mathf.PI);
-
-                                if (angle_ouverture_deg == 360)
-                                {
-                                    x = 0;
-                                    y = 0;
-                                    hauteur = r_ext;
-                                }
-                                icn.transform.localScale = new Vector2(hauteur, hauteur);
-                                icn.transform.Translate(x, y, -0.35f);
-                            }
+                            icn.transform.parent = rb.gameObject.transform;
                             rb._icone = icn;
                         }
                         catch (System.Exception ex)
@@ -268,7 +256,7 @@ namespace RingMenuJJ
                     }
 
                     //texte
-                    if (bouton.label_show && bouton.label != "")
+                    if (bouton.label.label_show && bouton.label.label != "")
                     {
                         GameObject canvas_go = new GameObject();
                         canvas_go.transform.SetParent(rb.gameObject.transform);
@@ -286,15 +274,20 @@ namespace RingMenuJJ
                         UnityEngine.UI.Text text = text_go.gameObject.AddComponent<UnityEngine.UI.Text>();
                         text.GetComponent<RectTransform>().sizeDelta = new Vector2(r_ext + r_int, r_ext + r_int);
                         text.alignment = TextAnchor.UpperCenter;
-                        text.text = bouton.label;
+                        text.text = bouton.label.label;
 
-                        text.font = bouton.label_font;
-                        text.fontStyle = bouton.label_fontStyle;
-                        text.resizeTextForBestFit = bouton.label_resizeTextForBestFit;
-                        if (!bouton.label_resizeTextForBestFit)
-                            text.fontSize = bouton.label_fontSize;
-                        text.color = bouton.label_color;
+                        text.font = bouton.label.label_font;
+                        text.fontStyle = bouton.label.label_fontStyle;
+                        text.resizeTextForBestFit = bouton.label.label_resizeTextForBestFit;
+                        if (!bouton.label.label_resizeTextForBestFit)
+                            text.fontSize = bouton.label.label_fontSize;
+                        text.color = bouton.label.label_color;
                     }
+
+                    //events
+                    rb._OnClick = bouton.events._OnClick;
+                    rb._OnEnter = bouton.events._OnEnter;
+                    rb._OnExit = bouton.events._OnExit;
                 }
                 catch (System.Exception ex)
                 {
@@ -303,5 +296,7 @@ namespace RingMenuJJ
             }
             return go;
         }
+
+
     }
 }

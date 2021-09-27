@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E047C208-8862-3F07-4632-4A59072B15B2}</ProjectGuid>
+    <ProjectGuid>{0E220C17-B4B0-D725-69B4-F95214BA212B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>UnityExtensions.ArrayDrawer</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -64,56 +64,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Resources\scripts\ClickOnCollider.cs" />
-    <Compile Include="Assets\Resources\scripts\GameObjectSelectionManager.cs" />
-    <Compile Include="Assets\Resources\scripts\MaterialSetColor.cs" />
-    <Compile Include="Assets\Resources\scripts\ObjExporter.cs" />
-    <Compile Include="Assets\Resources\scripts\Operation.cs" />
-    <Compile Include="Assets\Resources\scripts\PrintMesh.cs" />
-    <Compile Include="Assets\Resources\scripts\QuadCreator.cs" />
-    <Compile Include="Assets\Resources\scripts\ScriptsManager.cs" />
-    <Compile Include="Assets\Resources\scripts\Sector3D.cs" />
-    <Compile Include="Assets\Resources\scripts\Sector3D_demo_fromList1.cs" />
-    <Compile Include="Assets\Resources\scripts\ToHTML.cs" />
-    <Compile Include="Assets\Resources\scripts\TransformAGOFromInputs.cs" />
-    <Compile Include="Assets\Resources\scripts\Triangle3D.cs" />
-    <Compile Include="Assets\Resources\scripts\Triangle3DPrimitive.cs" />
-    <Compile Include="Assets\Resources\scripts\TrianglePrimitive.cs" />
-    <Compile Include="Assets\RingButton\Scripts\Anneau.cs" />
-    <Compile Include="Assets\RingButton\Scripts\Boutons.cs" />
-    <Compile Include="Assets\RingButton\Scripts\Math_JJ.cs" />
-    <Compile Include="Assets\RingButton\Scripts\Ring.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingButton.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingButton_EditorMode.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingButton_Manager.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingMenu.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingMenu_EditorMode.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingMenu_Interactions.cs" />
-    <Compile Include="Assets\RingButton\Scripts\RingMenu_Manager.cs" />
-    <Compile Include="Assets\RingButton\Sector3D_demo.cs" />
-    <Compile Include="Assets\UnityFBXExporter\FBXExporter.cs" />
-    <Compile Include="Assets\UnityFBXExporter\FBXUnityMaterialGetter.cs" />
-    <Compile Include="Assets\UnityFBXExporter\FBXUnityMeshGetter.cs" />
-    <Compile Include="Assets\destroyonclick.cs" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\RingButton\Resources\shaders\TransparentColored.shader" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleAsset.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleComponent.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleStruct.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleSubasset.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleSubassetWithBoolArray.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleSubassetWithDoubleArray.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ArrayDrawerExamples\SampleSubassetWithVectorAndColorArrays.cs" />
+    <Compile Include="Assets\UnityExtensions.ArrayDrawer-master\ReorderableListAttribute.cs" />
+    <None Include="Assets\UnityExtensions.ArrayDrawer-master\UnityExtensions.ArrayDrawer.asmdef" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -290,6 +249,27 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.VR">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UWP.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>D:/UNITY/Unity_RingMenu/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -639,44 +619,14 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>D:/UNITY/Unity_RingMenu/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="UnityExtensions.ArrayDrawer.csproj">
-      <Project>{0E220C17-B4B0-D725-69B4-F95214BA212B}</Project>
-      <Name>UnityExtensions.ArrayDrawer</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityExtensions.ArrayDrawer.Editor.csproj">
-      <Project>{E954ACAD-9D17-239A-5454-FB830F54CC4C}</Project>
-      <Name>UnityExtensions.ArrayDrawer.Editor</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

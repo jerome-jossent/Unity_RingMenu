@@ -7,9 +7,9 @@ namespace RingMenuJJ
     public class RingMenu_Manager : MonoBehaviour
     {
         public Dictionary<string, RingButton_Manager> _buttons;
+        public RingButton_Manager _selected_RingButton_Manager;
         RingButton_Manager rb_previsous = null;
         public string _selected_RingButton_name;
-        public RingButton_Manager _selected_RingButton_Manager;
 
         public event EventHandler<EventArgs> _OnSelected;
         public event EventHandler<EventArgs> _OnEnter;

@@ -8,7 +8,7 @@ public class destroyonclick : MonoBehaviour
 
     public void bob()
     {
-        Debug.Log("bobi")
-;    }
+        Debug.Log("bobi=" + gameObject.active.ToString());
+    }
 
 }

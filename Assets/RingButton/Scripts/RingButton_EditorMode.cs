@@ -1,36 +1,41 @@
 ﻿using RingMenuJJ;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="add RingButton", fileName = "New RingButton")]
-public class RingButton_EditorMode : ScriptableObject
-{    //https://www.youtube.com/watch?v=aPXvoWVabPY&t=84s
-    public bool visible;
+[Serializable]
+public class RingButton_EditorMode
+{
+    public bool visible = true;
+    public string name;
+    [HideInInspector] public int button_index_on_ring_int;
 
-    public Color button_color;
-
-    public string label;
-    public bool label_show;
-
+    public Color button_color = Color.white;
     public Texture2D icon;
-    public bool icon_show;
+    public Label label = new Label();
+    public Events events = new Events();
 
-    public int ring_index;
-    public float button_index_on_ring;
-    public int button_index_on_ring_int;
+    internal RingButton_Manager ringButtonManager;
+}
+
+[Serializable]
+public class Label
+{
+    public string label;
+    public bool label_show = true;
 
     public Font label_font;
     public FontStyle label_fontStyle;
     public bool label_resizeTextForBestFit = false;
     public int label_fontSize;
     public Color label_color;
+}
 
-    public string nom;
-    internal RingButton_Manager ringButtonManager;
-
-    //public UnityEngine.UI.Button.ButtonClickedEvent _OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-    //public UnityEngine.UI.Button.ButtonClickedEvent _OnEnter = new UnityEngine.UI.Button.ButtonClickedEvent();
-    //public UnityEngine.UI.Button.ButtonClickedEvent _OnExit = new UnityEngine.UI.Button.ButtonClickedEvent();
-
+[Serializable]
+public class Events
+{
+    public UnityEngine.UI.Button.ButtonClickedEvent _OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+    public UnityEngine.UI.Button.ButtonClickedEvent _OnEnter = new UnityEngine.UI.Button.ButtonClickedEvent();
+    public UnityEngine.UI.Button.ButtonClickedEvent _OnExit = new UnityEngine.UI.Button.ButtonClickedEvent();
 }

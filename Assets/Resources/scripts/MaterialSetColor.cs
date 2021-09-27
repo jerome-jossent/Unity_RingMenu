@@ -11,6 +11,7 @@ public class MaterialSetColor
 
         //Material mat = new Material(Shader.Find("Specular"));
         Material mat = new Material(Shader.Find("Unlit/TransparentColored"));
+        //Material mat = new Material(Shader.Find("Unlit/Transparent Cutout"));
         //ChangeRenderMode(mat, BlendMode.Transparent);
         mat.color = color;
         Renderer rnd = go.GetComponent<Renderer>();
